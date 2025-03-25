@@ -1,0 +1,99 @@
+#include <iostream>
+using namespace std;
+int main()
+{
+	int t;
+	cin>>t;
+	while(t--)
+	{
+		int N;
+		cin>>N;
+		int **matrix = new int*[N];
+		for(int i=0;i<N;i++)
+		matrix[i] = new int [N];
+		
+		for(int i=0;i<N;i++)
+		{
+			for(int j=0;j<N;j++)
+			{
+				matrix[i][j] = 0;
+			}
+		}
+		
+		int num = 1;
+		int row = 0;
+		int col = 0;
+		int change = 0;
+		while(num<=N*N)
+		{
+			matrix[row][col] = num;
+			num++;
+			if(change == 0)
+			{
+				if(col<N-1&&matrix[row][col+1] == 0)
+				{
+					col++;
+				}
+				else
+				{
+					row++;
+					change = 1;
+				}
+			}
+			else if(change == 1)
+			{
+				if(row<N-1&&matrix[row+1][col] == 0)
+				{
+					row++;
+				}
+				else
+				{
+					col--;
+					change = 2;
+				}
+			}
+			else if(change == 2)
+			{
+				if(col>0&&matrix[row][col-1] == 0)
+				{
+					col--;
+				}
+				else
+				{
+					row--;
+					change = 3;
+				}
+			}
+			else if(change == 3)
+			{
+				if(row>0&&matrix[row-1][col] == 0)
+				{
+					row--;
+				}
+				else
+				{
+					col++;
+					change = 0;
+				}
+			}
+		
+		}
+		for(int i=0;i<N;i++)
+		{
+			for(int j=0;j<N;j++)
+			{
+				if(j!=N-1)
+				cout<<matrix[i][j]<<" ";
+				else
+				cout<<matrix[i][j]<<endl;
+			}
+		}	
+		cout<<endl;
+		for(int i=0;i<N;i++)
+		{
+			delete[] matrix[i];
+		}
+		delete []matrix;
+	}
+	return 0;
+}
