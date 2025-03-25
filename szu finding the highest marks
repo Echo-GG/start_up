@@ -1,0 +1,31 @@
+#include <iostream>
+#include <algorithm>
+using namespace std;
+struct Student{
+	string code;
+	string name;
+	int grade1,grade2,grade3;
+	int Grade;
+};
+int main()
+{
+	int N;
+	cin>>N;
+	Student* student = new Student[N];
+	for(int i=0;i<N;i++)
+	{
+		cin>>student[i].code;
+		cin>>student[i].name;
+		cin>>student[i].grade1;
+		cin>>student[i].grade2;
+		cin>>student[i].grade3;
+		student[i].Grade = student[i].grade1+student[i].grade2+student[i].grade3;
+	}
+	sort(student,student+N,[](const Student &person1,const Student &person2)
+	{
+		return person1.Grade>person2.Grade;
+	});
+	cout<<student[0].name<<" "<<student[0].code<<" "<<student[0].Grade<<endl;
+	delete []student;
+	return 0;
+}
