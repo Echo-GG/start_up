@@ -1,0 +1,90 @@
+#include <iostream>
+#include <cstring>
+using namespace std;
+class Video{
+	int type;
+	string name;
+	int price;
+	int state;
+	public:
+//	Video()=default;
+	Video(int type_,string name_,int price_,int state_)
+	{
+		type=type_;
+		name=name_;
+		price=price_;
+		state=state_;		
+	}	
+	void Print()
+	{
+		if(type==1)
+		{
+			cout<<"BF";
+		}
+		else if(type==2)
+		{
+			cout<<"CD";
+		}
+		else if(type==3)
+		{
+			cout<<"VCD";
+		}
+		else if(type==4)
+		{
+			cout<<"DVD";
+		}
+		cout<<"["<<name<<"]";
+		if(state)
+		{
+			cout<<"rented"<<endl;
+		}
+		else
+		{
+			cout<<"not rented"<<endl;
+		}
+	}
+	int Fee(int a)
+	{
+		return price*a;
+	}
+	
+};
+int main()
+{
+	int n;
+	cin>>n;
+	int type;
+	string name;
+	int price;
+	int state;
+	while(n--)
+	{
+		cin>>type>>name>>price>>state;
+		Video video(type,name,price,state);
+		int check;
+		cin>>check;
+		if(check==0)
+		{
+			video.Print();
+		}
+		else
+		{
+			if(state)
+			{
+				int result=video.Fee(check);
+				video.Print();
+				cout<<"Rental: "<<result<<endl;	
+			}
+			else
+			{
+				video.Print();
+				cout<<"No rental"<<endl;
+			}
+		
+		}
+	
+	
+	}
+
+	return 0;
+}
