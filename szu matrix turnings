@@ -1,0 +1,64 @@
+#include <iostream>
+#define N 2
+#define M 3
+using namespace std;
+int main()
+{
+	int t;
+	cin>>t;
+	int matrix[N][M];
+	int matrix_[M][N];
+//	for(int i=0;i<N;i++)
+//	{
+//		for(int j=0;j<M;j++)
+//		{
+//			matrix[i][j]=0;
+//		}
+//	}
+//	for(int i=0;i<M;i++)
+//	{
+//		for(int j=0;j<N;j++)
+//		{
+//			matrix_[i][j]=0;
+//		}
+//	}
+//the initialization of the matrix[i][j] and the matrix_[j][i] is not necessary in their turning changes.
+	while(t--)
+	{
+		for(int i=0;i<N;i++)
+		{
+			for(int j=0;j<M;j++)
+			{
+				cin>>matrix[i][j];
+			}
+		}
+		for(int i=0;i<N;i++)
+		{
+			for(int j=0;j<M;j++)
+			{
+				matrix_[M-1-j][i]=matrix[i][j];
+			}//turn left
+//			for(int i=0;i<N;i++)
+//			{
+//				for(int j=0;j<M;j++)
+//				{
+//					matrix_[j][N-1-i]=matrix[i][j];
+//				}
+//			}//turn right
+		}
+		for(int i=0;i<M;i++)
+		{
+			for(int j=0;j<N;j++)
+			{
+				if(j!=N-1)
+				{
+					cout<<matrix_[i][j]<<" ";
+				}
+				else
+				cout<<matrix_[i][j]<<" "<<endl;
+			}
+		}
+	}
+	
+	return 0;
+}
