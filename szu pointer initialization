@@ -1,0 +1,19 @@
+#include <iostream>
+using namespace std;
+int main()
+{
+	int *p = NULL;
+	int i;
+	cin>>i;
+	if(i==1)
+	{
+		p=&i;
+	}
+	if(p==NULL)
+	{
+		cout<<"NULL";
+	}
+	else
+	cout<<"Initialized"<<endl;
+	return 0;
+}
