@@ -1,0 +1,33 @@
+#include <iostream>
+#include <algorithm>
+using namespace std;
+struct Birthday{
+	int year,month,day;
+};
+int main()
+{
+	int t;
+	cin>>t;
+	Birthday* birthday = new Birthday[t];
+	for(int i=0;i<t;i++)
+	{
+		cin>>birthday[i].year;
+		cin>>birthday[i].month;
+		cin>>birthday[i].day;
+	}
+	sort(birthday,birthday+t,[](const Birthday &person1,const Birthday &person2)
+	{
+		if(person1.year!=person2.year)
+		return person1.year<person2.year;
+		else if(person1.month!=person2.month)
+		return person1.month<person2.month;
+		else
+		return person1.day<person2.day;
+	});
+	for(int i=0;i<t;i++)
+	{
+		cout<<i+1<<":"<<birthday[i].year<<"-"<<birthday[i].month<<"-"<<birthday[i].day<<endl;
+	}
+	delete[]birthday;
+	return 0;
+}
