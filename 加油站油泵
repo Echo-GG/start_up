@@ -1,0 +1,86 @@
+#include <iostream>
+using namespace std;
+
+class Pump {
+    double quantity; 
+    double price;   
+
+public:
+    Pump(double q, double p) 
+	{
+        quantity = q;
+        price = p;
+    }
+
+    double getPrice() 
+	{
+        return price;
+    }
+
+    double getQuantity() 
+	{
+        return quantity;
+    }
+
+    double Judge(double want) 
+	{
+        if (quantity <= 0) 
+		{
+            return -1; 
+        }
+        if (want <= quantity) 
+		{
+            return want; 
+        } 
+		else 
+		{
+            return quantity; 
+        }
+    }
+
+    void dispaly() 
+	{
+        cout << quantity << " " << price << endl;
+    }
+
+    void updateQuantity(double provided) 
+	{
+        quantity -= provided;
+    }
+};
+
+int main() {
+    double q, p;
+    cin >> q >> p; 
+    Pump pump(q, p);
+
+    int t;
+    cin >> t;
+    while (t--) 
+	{
+        double want;
+        cin >> want; 
+
+        double provided = pump.Judge(want);
+
+        if (provided == -1) 
+		{ 
+            cout << "empty" << endl;
+            break;
+        }
+
+        cout << "before: ";
+        pump.dispaly();
+
+        cout << provided << " " << provided * pump.getPrice() << endl;
+
+        pump.updateQuantity(provided);
+
+        cout << "after: ";
+        pump.dispaly();
+
+        cout << endl;
+    }
+
+    return 0;
+}
