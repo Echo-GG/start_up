@@ -1,0 +1,110 @@
+#include <iostream>
+using namespace std;
+
+class CDate
+{
+public:
+    CDate(int, int, int); // 构造函数
+    void print();   // 输出：mm/dd/yyyy, 星期
+    void getWeekofDay(); // 按题目给出公式计算星期几，即week值，1～7
+
+private:
+    int month;
+    int day;
+    int year;
+    int week;  
+};
+// 补齐CDate的构造函数头，空函数体{}已给出
+/********** Write your code here! **********/
+void CDate::getWeekofDay()
+{
+	int m = month;
+	int y = year;
+	int d = day;
+	if(m==1 || m==2)
+	{
+		m+=12;
+		y--;
+	}
+	week = (d + 2*m + 3*(m+1)/5 + y + y/4 - y/100 + y/400) % 7 + 1;
+//	if(month==1)
+//	{
+//		month = 13;
+//		year--;
+//	}
+//	if(month ==2)
+//	{
+//		month == 14;
+//		year--;
+//	}
+//	week = (day + 2*month + 3*(month+1)/5 + year + year/4 - year/100 + year/400) % 7 + 1;
+//这类get型的函数不应修改对象属性，故应传参数而不是对象
+	switch(week)
+	{
+	
+		case(1):
+			{
+				cout<<"Monday"<<endl;
+				break;
+			}
+		case(2):
+			{
+				cout<<"Tuesday"<<endl;
+				break;
+			}
+		case(3):
+			{
+				cout<<"Wednesday"<<endl;
+				break;
+			}
+		case(4):
+			{
+				cout<<"Thursday"<<endl;
+				break;
+			}
+		case(5):
+			{
+				cout<<"Friday"<<endl;
+				break;
+			}
+		case(6):
+			{
+				cout<<"Saturday"<<endl;
+				break;
+			}
+		case(7):
+			{
+				cout<<"Sunday"<<endl;
+				break;
+			}
+	}	
+}
+void CDate::print()
+{
+	cout<<month<<'/'<<day<<'/'<<year<<", ";
+	getWeekofDay();
+}
+CDate::CDate(int m,int d,int y):month(m),day(d),year(y)
+/*******************************************/
+{
+}
+// 补齐getWeekofDay,print成员函数和主函数
+/********** Write your code here! **********/
+int main()
+{
+	int n;
+	cin>>n;
+	int month,day,year;
+	while(n--)
+	{
+		cin>>year>>month>>day;
+		CDate date(month,day,year);
+		date.print();
+	}
+	
+	return 0;
+}
+
+
+
+/*******************************************/
