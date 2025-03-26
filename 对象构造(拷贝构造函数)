@@ -1,0 +1,52 @@
+#include <iostream>
+using namespace std;
+
+// 补齐CObject类定义和实现
+
+/********** Write your code here! **********/
+class CObject{
+	int member;
+	public:
+		CObject()
+		{
+			cout<<"Constructed by default, value = 0"<<endl;
+		}
+		CObject(int n)
+		{
+			member = n;
+			cout<<"Constructed using one argument constructor, value = "<<member<<endl;
+		}
+		CObject(CObject &other):member(other.member)
+		{
+			cout<<"Constructed using copy constructor, value = "<<member<<endl;
+		}
+};
+
+
+/*******************************************/
+int main()
+{
+    int t,n,val;
+
+    cin >> t;
+    while(t--)
+    {
+        cin >> n;
+        if(!n)
+        {
+            CObject obj;
+        }
+        else if(n==1)
+        {
+            cin >> val;
+            CObject obj(val);
+        }
+        else if(n==2)
+        {   
+            cin >> val;
+            CObject obj(val);
+            CObject newobj(obj);
+        }
+    }
+  	return 0;
+}
