@@ -1,0 +1,83 @@
+#include <iostream>
+#include <cstring>
+using namespace std;
+class CTelNumber{
+private:
+    char *telNumber;
+public:
+    CTelNumber() 
+	{
+        telNumber = nullptr;
+    } 
+    CTelNumber(const char *number) 
+	{
+        if (isValid(number)) 
+		{
+            telNumber = new char[strlen(number) + 1];
+            strcpy(telNumber, number);
+        } 
+		else 
+		{
+            telNumber = nullptr;
+        }
+    } 
+    ~CTelNumber() 
+	{
+        delete[] telNumber;
+    }
+    CTelNumber(const CTelNumber &other) 
+	{
+        if (other.telNumber) 
+		{
+            telNumber = new char[9]; 
+            telNumber[0] = (other.telNumber[0] == '2' || other.telNumber[0] == '3' || other.telNumber[0] == '4') ? '8' : '2';
+            strcpy(telNumber + 1, other.telNumber);
+        } 
+		else 
+		{
+            telNumber = nullptr;
+        }
+    }
+    bool isValid(const char *number) const 
+	{
+        if (strlen(number) != 7) 
+		return false;
+        if (number[0] != '2' && number[0] != '3' && number[0] != '4' &&
+            number[0] != '5' && number[0] != '6' && number[0] != '7' && number[0] != '8') 
+			return false;
+        for (int i = 0; i < 7; ++i) 
+		{
+            if (!isdigit(number[i])) 
+			return false;
+        }
+        return true;
+    }
+    void print() const 
+	{
+        if (telNumber) 
+		{
+            cout << telNumber << endl;
+        } 
+		else 
+		{
+            cout << "Illegal phone number" << endl;
+        }
+    }
+};
+
+int main() 
+{
+    int t;
+    cin >> t;
+    cin.ignore(); 
+    for (int i = 0; i < t; ++i) 
+	{
+        char number[8];
+        cin.getline(number, 8); 
+        CTelNumber original(number); 
+        CTelNumber upgraded(original);
+        upgraded.print(); 
+    }
+
+    return 0;
+}
