@@ -1,0 +1,89 @@
+#include <iostream>
+using namespace std;
+class complex
+{
+	private:
+		float real,imag;
+	public:
+		complex():real(1),imag(1)
+		{
+	
+		}
+		complex(float a,float b)
+		{
+			real = a;
+			imag = b;
+		}
+		complex add(const complex &c)
+		{
+			return  complex(real+c.real,imag+c.imag);
+		}
+		
+		complex minus(const complex &c)
+		{
+			return  complex(real-c.real,imag-c.imag);
+		}
+		
+		void print() const 
+		{
+			if(real==0&&imag==0)
+			{
+				cout<<0<<endl;
+			}
+			else if(real!=0&&imag==0)
+			{
+				cout<<real<<endl;
+			}
+			else if(real==0&&imag!=0)
+			{
+				if(imag!=1&&imag!=-1)
+				cout<<imag<<"i"<<endl;
+				else if(imag==1)
+				cout<<"i"<<endl;
+				else if(imag==-1)
+				cout<<"-i"<<endl;
+			}
+			else
+			{
+				if(imag<0)
+				{
+					if(imag!=-1)
+					cout<<real<<imag<<"i"<<endl;
+				
+					else if(imag==-1)
+					cout<<real<<"-i"<<endl;	
+				}		
+				else if(imag>0)
+				{
+					if(imag!=1)
+					cout<<real<<"+"<<imag<<"i"<<endl;
+					else if(imag==1)
+					cout<<real<<"+"<<"i"<<endl;
+				}
+			}
+    	}
+
+};
+
+int main()
+{
+	int t;
+	cin>>t;
+	while(t--)
+	{
+		int a,b;
+		cin>>a>>b;
+		complex number(a,b);
+		int c,d;
+		cin>>c>>d;
+		complex anothernumber(c,d);
+		complex result1 = number.add(anothernumber);
+		cout<<"sum:";
+		result1.print();
+		complex result2 = number.minus(anothernumber);
+		cout << "remainder:";
+		result2.print();
+	}
+	
+	return 0;
+}
