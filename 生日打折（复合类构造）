@@ -1,0 +1,74 @@
+#include <iostream>
+using namespace std;
+
+
+class Date {
+private:
+    int year;
+    int month;
+    int day;
+
+public:
+
+	Date(int y,int m,int d)
+	{
+		year = y;
+		month = m;
+		day = d;
+	}
+
+    bool isEqual(const Date &other) const
+	{
+        return  (month == other.month) && (day == other.day);
+    }
+
+
+};
+
+class VIP {
+private:
+    int id;
+    Date birth;
+public:
+    VIP(int id, const Date &birth) : id(id), birth(birth) {}
+    float Discount(const Date &today) const 
+	{
+        if (birth.isEqual(today)) 
+		{
+            return 0.5;
+        } 
+		else 
+		{
+            return 0.95; 
+        }
+    }
+
+    int getId() const 
+	{
+        return id;
+    }
+};
+
+int main() 
+{
+    int year, month, day;
+    cin >> year >> month >> day;
+    Date today(year, month, day);
+    int t;
+    cin >> t;
+
+    for (int i = 0; i < t; ++i) 
+	{
+        int id;
+        int birthYear, birthMonth, birthDay;
+        cin >> id >> birthYear >> birthMonth >> birthDay;
+        Date birthDate(birthYear, birthMonth, birthDay);
+        VIP vip(id, birthDate);
+        double amount;
+        cin >> amount;
+        double discountedAmount = amount * vip.Discount(today);
+        cout << vip.getId() << "'s consumption is " << int(discountedAmount) << endl;
+    }
+
+    return 0;
+}
