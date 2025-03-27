@@ -1,0 +1,171 @@
+#include <iostream>
+#include <cstring>
+using namespace std;
+class CDate {
+private:
+    int year, month, day;
+
+public:
+    CDate(int y, int m, int d) : year(y), month(m), day(d) {}
+
+    int getYear() const { return year; }
+    int getMonth() const { return month; }
+    int getDay() const { return day; }
+
+    bool check() 
+	{
+        if (month < 1 || month > 12) 
+		return false;
+        if (day < 1) 
+		return false;
+        int daysInMonth[] = {31, (isLeap() ? 29 : 28), 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+        return day <= daysInMonth[month - 1];
+    }
+
+    bool isLeap() 
+	{
+        return (year % 4 == 0 && year % 100 != 0) || (year % 400 == 0);
+    }
+
+    void print() 
+	{
+        cout << year << "年" << month << "月" << day << "日";
+    }
+};
+
+class CStudentID {
+private:
+    char *p_id, *p_name; 
+    CDate birthday;   
+    int registered;      
+    char calculateCheckDigit(const char *id) 
+	{
+        int weights[17] = {7, 9, 10, 5, 8, 4, 2, 1, 6, 3, 7, 9, 10, 5, 8, 4, 2};
+        char checkDigits[11] = {'1', '0', 'X', '9', '8', '7', '6', '5', '4', '3', '2'};
+        int sum = 0;
+        for (int i = 0; i < 17; ++i) 
+		{
+            sum += (id[i] - '0') * weights[i];
+        }
+        return checkDigits[sum % 11];
+    }
+
+public:
+    CStudentID(char *p_idval, char *p_nameval, CDate &day) : birthday(day), registered(0)
+	{
+        p_id = new char[strlen(p_idval) + 1];
+        p_name = new char[strlen(p_nameval) + 1];
+        strcpy(p_id, p_idval);
+        strcpy(p_name, p_nameval);
+
+        if (!birthday.check() || (strlen(p_id) != 15 && strlen(p_id) != 18)) 
+		{
+            cout << p_name << " illegal id" << endl;
+            return;
+        }
+
+        for (int i = 0; i < strlen(p_id); i++) 
+		{
+            if ((p_id[i] < '0' || p_id[i] > '9') && (p_id[i] != 'X' || i != 17)) 
+			{
+                cout << p_name << " illegal id" << endl;
+                return;
+            }
+        }
+
+        int idYear, idMonth, idDay;
+        if (strlen(p_id) == 18) 
+		{
+            idYear = (p_id[6] - '0') * 1000 + (p_id[7] - '0') * 100 + (p_id[8] - '0') * 10 + (p_id[9] - '0');
+            idMonth = (p_id[10] - '0') * 10 + (p_id[11] - '0');
+            idDay = (p_id[12] - '0') * 10 + (p_id[13] - '0');
+        } 
+		else 
+		{ 
+            idYear = 1900 + (p_id[6] - '0') * 10 + (p_id[7] - '0');
+            idMonth = (p_id[8] - '0') * 10 + (p_id[9] - '0');
+            idDay = (p_id[10] - '0') * 10 + (p_id[11] - '0');
+        }
+
+        if (idYear != birthday.getYear() || idMonth != birthday.getMonth() || idDay != birthday.getDay()) 
+		{
+            cout << p_name << " illegal id" << endl;
+            return;
+        }
+
+        if (strlen(p_id) == 18 && p_id[17] != calculateCheckDigit(p_id)) 
+		{
+            cout << p_name << " illegal id" << endl;
+            return;
+        }
+        registered = 1;
+        cout << p_name << " ";
+        birthday.print();
+        cout << " " << p_id << endl;
+    }
+
+	CStudentID(const CStudentID &r) : birthday(r.birthday), registered(r.registered) {
+        p_id = new char[strlen(r.p_id) + 1];
+        p_name = new char[strlen(r.p_name) + 1];
+        strcpy(p_id, r.p_id);
+        strcpy(p_name, r.p_name);
+
+        if (strlen(p_id) == 15) 
+		{
+            char temp[19] = {0}; 
+      
+            strncpy(temp, p_id, 6);
+     
+            temp[6] = '1';
+            temp[7] = '9';
+       
+            strncpy(temp + 8, p_id + 6, 9); 
+            
+            temp[17] = calculateCheckDigit(temp);
+            temp[18] = '\0';
+       
+            delete[] p_id;
+            p_id = new char[strlen(temp) + 1];
+            strcpy(p_id, temp);
+        }
+    }
+
+    bool checked() 
+	{
+        return registered;
+    }
+
+    ~CStudentID() 
+	{
+        delete[] p_id;
+        delete[] p_name;
+    }
+
+    void print() 
+	{
+        cout << p_name << " ";
+        birthday.print();
+        cout << " " << p_id << endl;
+    }
+};
+
+int main() 
+{
+    int t;
+    cin >> t;
+    while (t--) 
+	{
+        int year, month, day;
+        cin >> year >> month >> day;
+        CDate date(year, month, day);
+        char name[50], id[20];
+        cin >> name >> id;
+        CStudentID s(id, name, date);
+        if (s.checked()) 
+		{
+            CStudentID s_copy(s);
+            s_copy.print();
+        }
+    }
+    return 0;
+}
