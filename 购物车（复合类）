@@ -1,0 +1,176 @@
+#include <iostream>
+#include <iomanip>
+using namespace std;
+
+class Items {
+private:
+    string code;   
+    string name;    
+    string color;   
+    string size;   
+    double price;   
+    int number;     
+
+public:
+    Items(string code_ = "", string name_ = "", string color_ = "", string size_ = "", double price_ = 0.0, int number_ = 0)
+        : code(code_), name(name_), color(color_), size(size_), price(price_), number(number_) {}
+
+    string getCode() const { return code; }
+
+    string getName() const { return name; }
+
+    string getColor() const { return color; }
+
+    string getSize() const { return size; }
+
+    double getPrice() const { return price; }
+
+    int getNumber() const { return number; }
+
+    void setNumber(int number_) { number = number_; }
+
+    double getTotalPrice() const { return price * number; }
+
+    void print() const 
+	{
+        cout << name << "," << color << "," << size << "," << fixed << setprecision(2) << price << "," << number << "," << fixed << setprecision(2) << getTotalPrice() << endl;
+    }
+};
+
+class Shop {
+private:
+    Items items[100]; 
+    int total;       
+    double sum;       
+    int count;      
+
+public:
+    Shop() : total(0), sum(0.0), count(0) {}
+
+    void ADD(const Items& item) 
+	{
+        bool found = false;
+        for (int i = 0; i < count; i++) 
+		{
+            if (items[i].getCode() == item.getCode()) 
+			{
+                items[i].setNumber(items[i].getNumber() + item.getNumber());
+                found = true;
+                break;
+            }
+        }
+        if (!found) 
+		{
+            items[count++] = item; 
+        }
+        total += item.getNumber(); 
+        sum += item.getTotalPrice(); 
+    }
+
+    void DELETE(const string& code) 
+	{
+        for (int i = 0; i < count; i++) 
+		{
+            if (items[i].getCode() == code) 
+			{
+                total -= items[i].getNumber(); 
+                sum -= items[i].getTotalPrice(); 
+                for (int j = i; j < count - 1; j++) 
+				{
+                    items[j] = items[j + 1];
+                }
+               	count--;
+                break;
+            }
+        }
+    }
+
+    void UP(const string& code) 
+	{
+        for (int i = 0; i < count; i++)
+		{
+            if (items[i].getCode() == code) 
+			{
+                items[i].setNumber(items[i].getNumber() + 1);
+                total += 1; 
+                sum += items[i].getPrice(); 
+                break;
+            }
+        }
+    }
+
+    void DOWN(const string& code) 
+	{
+        for (int i = 0; i < count; i++) 
+		{
+            if (items[i].getCode() == code) 
+			{
+                if (items[i].getNumber() > 1) 
+				{
+                    items[i].setNumber(items[i].getNumber() - 1);
+                    total -= 1; 
+                    sum -= items[i].getPrice(); 
+                }
+                break;
+            }
+        }
+    }
+    
+    void printItems() const 
+	{
+        cout << "商品清单:" << endl;
+        cout << "商品,颜色,尺码,单价,数量,小计" << endl;
+        for (int i = count-1; i >= 0; i--) 
+		{
+            items[i].print();
+        }
+        cout << "----------" << endl;
+        cout << total << "件商品,总商品金额" << fixed << setprecision(2) << sum << endl;
+    }
+};
+
+int main() 
+{
+    int t;
+    cin >> t;
+    while (t--) 
+	{
+        Shop shop;
+        int n;
+        cin >> n;
+        while (n--) 
+		{
+            string operation;
+            cin >> operation;
+            if (operation == "ADD") 
+			{
+                string code, name, color, size;
+                double price;
+                int number;
+                cin >> code >> name >> color >> size >> price >> number;
+                Items item(code, name, color, size, price, number);
+                shop.ADD(item);
+            } 
+			else if (operation == "DELETE") 
+			{
+                string code;
+                cin >> code;
+                shop.DELETE(code);
+            } 
+			else if (operation == "UP") 
+			{
+                string code;
+                cin >> code;
+                shop.UP(code);
+            } 
+			else if (operation == "DOWN") 
+			{
+                string code;
+                cin >> code;
+                shop.DOWN(code);
+            }
+        }
+        shop.printItems();
+    }
+    return 0;
+}
