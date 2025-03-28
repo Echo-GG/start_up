@@ -1,0 +1,54 @@
+#include <iostream>
+#include <cmath>
+using namespace std;
+
+double avg(double *num,int size)
+{
+	double average=0;
+	for(int i=0;i<size;i++)
+	{
+		average+=*(num+i);
+	}
+	average/=size;
+	return average;
+}
+int main()
+{
+	int t;
+	cin>>t;
+	double *num = new double [t];	
+	for(int i=0;i<t;i++)
+	{
+		cin>>*(num+i);
+	}
+	double real_value = avg(num,t);
+	double *mistake = new double[t];
+	for(int i=0;i<t;i++)
+	{
+		*(mistake+i) = *(num+i) - real_value;
+	}
+	double *absolute_mistake = new double [t];
+	for(int i=0;i<t;i++)
+	{
+		*(absolute_mistake+i) = *(mistake+i);
+	}
+	double *compared_mistake = new double [t];
+	for(int i=0;i<t;i++)
+	{
+		*(compared_mistake+i) = *(absolute_mistake+i)/real_value;
+	}
+	cout<<"绝对误差:"<<endl;
+	for(int i=0;i<t;i++)
+	{
+		cout<<fabs(*(absolute_mistake+i))<<endl;
+	}
+	cout<<"相对误差:"<<endl;
+	for(int i=0;i<t;i++)
+	{
+		cout<<*(compared_mistake+i)<<endl;
+	}
+	delete []num;
+	delete []mistake;
+	delete []absolute_mistake;
+	delete []compared_mistake;
+}
