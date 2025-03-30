@@ -1,0 +1,68 @@
+//头文件和日期类声明
+#include<iostream>
+#include<iomanip>
+using namespace std;
+ 
+class TDate {
+private:
+    int year,month,day;
+public:
+    int getYear(){return year;}
+    int getMonth(){return month;}
+    int getDay(){return day;}
+    void set(int y,int m,int d);
+    void print();
+    void addOneDay();
+};
+
+//----在以下区域完成部分成员函数的类外定义----
+/********** Write your code here! **********/
+void TDate::addOneDay()
+{
+	int months[13]={0,31,28,31,30,31,30,31,31,30,31,30,31};
+	if(year%400==0||year%4==0&&year%100!=0)
+	{
+		months[2] = 29;
+	}
+	day++;
+	if(day>months[month])
+	{
+		month++;
+		day = 1;
+	}
+	if(month>12)
+	{
+		year++;
+		month = 1;
+	}
+}
+
+void TDate::print()
+{
+	cout<<year<<setw(2)<<setfill('0')<<month<<setw(2)<<setfill('0')<<day;
+}
+
+void TDate::set(int y,int m,int d)
+{
+	year = y;
+	month =m;
+	day = d;
+}
+/*******************************************/
+//主函数如下
+int main()
+{   int t, y,m,d;
+    cin>>t;
+    while(t--)
+    {	TDate d1;
+		cin>>y>>m>>d;
+		d1.set(y, m, d);
+        cout<<"Today-";
+        d1.print();
+        d1.addOneDay();
+        cout<<" Tomorrow-";
+        d1.print();
+		cout<<endl;
+    }
+    return 0;
+}
