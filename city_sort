@@ -1,0 +1,24 @@
+#include <iostream>
+#include <algorithm>
+using namespace std;
+
+int main()
+{
+	int n;
+	cin>>n;
+	string* name = new string [n];
+	for(int i=0;i<n;i++)
+	{
+		cin>>*(name+i);
+	}
+	sort(name,name+n,[](string &a,string &b)
+	{
+		return a<b;
+	});
+	for(int i=0;i<n;i++)
+	{
+		cout<<*(name+i)<<endl;
+	}
+	delete []name;
+	return 0;
+}
