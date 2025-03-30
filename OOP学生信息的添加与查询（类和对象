@@ -1,0 +1,106 @@
+#include <iostream>
+#include <algorithm>
+#include <iomanip>
+#include <string>
+using namespace std;
+
+class Student 
+{
+    string id, name, birthday;
+    double score;
+
+public:
+    Student() {}
+
+    Student(string id_, string name_, string birthday_, double score_)
+        : id(id_), name(name_), birthday(birthday_), score(score_) {}
+
+    string getid() const 
+	{
+        return id;
+    }
+
+    string getname() const 
+	{
+        return name;
+    }
+
+    string getbirthday() const 
+	{
+        return birthday;
+    }
+
+    double getscore() const 
+	{
+        return score;
+    }
+
+    Student(const Student &otherstudent)
+        : id(otherstudent.id), name(otherstudent.name), birthday(otherstudent.birthday), score(otherstudent.score) {}
+	void PrintDate()
+	{
+
+		string year = birthday.substr(0,4);
+		string month = birthday.substr(5,2);
+		string day = birthday.substr(8,2);
+		if(month[0]=='0')
+		{
+			month = month.substr(1);
+		}
+		if(day[0]=='0')
+		{
+			day = day.substr(1);
+		}
+		cout<<year<<"_"<<month<<"_"<<day;
+	}
+};
+
+int main() 
+{
+    int N;
+    cin >> N;
+    string id, name, birthday;
+    double score;
+
+    Student *students = new Student[N];
+
+	int cnt = 0;
+    for (int i = 0; i < N; i++) 
+	{
+        cin >> id >> name >> birthday >> score;
+   
+	
+	    
+	    bool found = false;
+    	for(int j=0;j<cnt;j++)
+    	{
+    		if(students[j].getid()==id)
+    		{
+    			students[j] = Student(id,name,birthday,score);
+				found = true;
+				break;
+			}
+		}
+		if(!found)
+		{
+			students[cnt++] = Student(id,name,birthday,score);
+		}
+    }
+    
+    sort(students, students + cnt, [](const Student &a, const Student &b) 
+	{
+        return a.getid() < b.getid();
+    });
+
+    for (int i = 0; i < cnt; i++) 
+	{
+        cout << "id:" <<students[i].getid()<<" name:"
+             << students[i].getname() << " birthday:";
+        students[i].PrintDate(); 
+		cout<< " score:"<<fixed<<setprecision(1)
+            << students[i].getscore() << endl;
+    }
+
+    delete[] students; 
+    return 0;
+}
