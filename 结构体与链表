@@ -1,0 +1,228 @@
+#include <iostream>
+using namespace std;
+struct Node{
+	int e;
+	Node *next;
+}*Head,*p;
+//链表---结构体成员含指向自身结构的指针
+
+
+//已知头结点Node *head,遍历整个链表
+//Node *head;
+//Node *p;
+//p = head->next;//等价于(*head).next
+//p = p->next;
+//具体操作如下:
+//Node *p = head->next;
+//while(p)//链表的最后一个元素p = NULL;
+//{
+	//对数据域e进行处理
+//	p = p->next;
+//}
+
+//插入节点：
+//p,q之间插入节点s:
+//s->next = p->next;//s->next = q;q的地址存在p->next中.
+//p->next = s;//p->next的值应为s的地址.
+//这两条语句不能交换位置！
+//具体操作如下:
+void InsertList(Node *head,int i,int e)//在链表的第i个位置插入一个新元素
+{
+	//Node *head头结点指针,int i插入的位置,int e数据的值.
+	//插入前一般先判断插入的位置i是否合法.
+	if(i<1 || i>head->e+1)
+	{
+		cout<<"error"<<endl;
+		return;
+	}
+	Node *p = head;
+	//写循环移动指针
+	for(int j = 1;j < i; j++)
+	{
+		//与数组下标不同,链表的下标从1开始
+		p = p->next;
+	}
+	//把节点挪到第i-1个节点处
+	Node *s = new Node{e,NULL};
+//	s->e = e;
+	s->next = p->next;
+	p->next = s;
+	head->e++;
+	p->next = s;
+}
+
+
+
+//创建链表
+//Node *CreatList()
+//{
+//	Node *head = new Node{0,NULL};
+//	//创建头结点
+//	int n,e;
+//	cin>>n;
+//	for(int j=1;j<=n;j++)
+//	{
+//		cin>>e;
+//		InsertList(head,j,e);//调用已经写好得的InsertList函数从表位插入.
+//		//若要从表头插入,将j改为1即可.
+//	}
+//}
+
+
+
+//具体操作如下:
+//void creatList(Node *head)
+//{
+//	int n,e;
+//	cin>>n;
+//	for(int i=1;i<=n;i++)//链表的第一个合理位置是1.
+//	{
+//		cin>>e;
+//		InsertList(head,i,e);//链表的创建实际上是双循环作用下的结果.
+//		//若改为InsertList(head,1,e)则全改为了从表头插入.
+//	}
+//}
+
+//s->next = p->next;
+//p->next = s;
+//p = s;
+//通过p每次往前挪一步,来实现单循环条件下的链表创建.
+//具体操作如下:
+void createList(Node *head)
+{
+	Node *p = head;
+	int n,e;
+	cin>>n;
+	for(int i=1;i<=n;i++)
+	{
+		cin>>e;
+		Node *s = new Node{e,NULL};
+		//让p指向s
+//		s->next = p->next;//本条语句可以省略，此情况下总是在尾巴上插,而末尾处为nullptr;
+		p->next = s;
+		p =s;
+		head->e++;
+	}
+}
+//Another way:每次在头结点后插入新的元素
+//插入一个新的节点需要两条语句:
+//void createList(Node *head)
+//{
+//	int n,e;
+//	cin>>n;
+//	for(int i=1;i<=n;i++)
+//	{
+//		cin>>e;
+//		Node *s = new Node{e,NULL};
+//		s->next = head->next;
+//		head->next = s;
+//		head->e++;
+//	}
+//}
+
+//查找元素
+//两类问题：
+//Q1:找到这个链表的第i个元素,处理他的值或者返回他的值;
+//Q2:给定一个数值,查找链表中是否存在某个节点的数值与之相同,找出这个节点.
+//void searchList(Node *head,int i)
+//{
+//	Node *p = head;
+//	while(i--)
+//	{
+//		p = p->next;
+//		cout<<p->e<<endl;
+//	}
+//}
+void searchList(Node *head,int i)//situation1
+{
+	if(i<1 ||i>head->e)
+	{
+		cout<<"error"<<endl;
+		return;
+//		return NULL;//视题目要求而定
+	}
+	Node *p = head;
+	while(i--)
+	{
+		p = p->next;
+	}
+	cout<<p->e<<endl;
+//	return p;//视题目要求而定
+}
+
+//Node *searchList(Node *head,int data)//situation2
+//{
+//	Node *p = head->next;
+//	while(p)
+//	{
+//		if(p->e==data)
+//		{
+//			return p;
+//		}
+//		p = p->next;
+//	}
+//	return NULL;
+//}
+
+//删除结点
+void deleteList(Node *head,int i)
+//删除链表第i个位置的元素。
+{
+	//判断位置i的合法性
+	if(i<1 ||i>head->e)
+	{
+		cout<<"error"<<endl;
+		return;
+	}
+	Node *p = head;
+	for(int j=1;j<i;j++)
+	{
+		p = p->next;
+	}
+	//通常还需要释放删除的结点的空间
+	Node *q = p->next;
+	p->next = p->next->next;
+	delete q;
+	head->e--;
+}
+
+//输出链表中的元素
+void showList(Node *head)
+{
+	//头结点并不是链表的第一个元素
+	Node *p = head->next;
+	while(p->next)
+	{
+		cout<<p->e<<" ";
+		p = p->next;
+	}
+	cout<<p->e<<endl;
+}
+
+//删除链表
+//使用头结点当参照物,每一次删除头结点的后一个结点,直至只剩下头结点。
+void destroyList(Node *head)
+{
+	Node *p;
+	while(head->next)
+	{
+		p = head->next;
+		head->next = p->next;
+		delete p;
+	}
+	delete head;
+}
+
+//在main函数中测试以上函数:
+int main()
+{
+	Node *head = new Node{0,NULL};
+	createList(head);
+	showList(head);
+	InsertList(head,3,100);//e.g. i = 3,e = 100;	
+	showList(head);
+	deleteList(head,2);//e.g. i = 2;
+	showList(head);
+	destroyList(head);
+	return 0;
+}
