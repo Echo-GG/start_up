@@ -1,0 +1,34 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+int main() 
+{
+    int T;
+    cin >> T;
+    while (T--) 
+	{
+        string s;
+        cin >> s;
+        int key = 4; 
+        for (int i = 0; i < s.length(); i++)
+		{
+            char ch = s[i];
+            if ((ch >= 'A' && ch <= 'Z') || (ch >= 'a' && ch <= 'z')) 
+			{
+                if ((ch >= 'a' && ch <= 'z')) 
+				{    
+                    ch = 'a' + (ch - 'a' + key) % 26;
+                } 
+				
+				else 
+				{
+                    ch = 'A' + (ch - 'A' + key) % 26;
+                }
+                s[i] = ch; 
+            }
+        }
+        cout << s << endl; 
+    }
+    return 0;
+}
