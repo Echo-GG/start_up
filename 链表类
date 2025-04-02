@@ -1,0 +1,139 @@
+#include <iostream>
+using namespace std;
+//不带头结点单链表插入
+class cnode{
+	private:
+		int data;//数据域
+		cnode *next;//指针域
+	public:
+		cnode(int e = 0,cnode *nextval = nullptr);
+		cnode *getnext();//私有数据成员访问接口
+		void setnext(cnode *nextval);
+		int getdata();
+		void setdata(int e);
+};//结点类
+
+class clist{
+	private:
+		cnode *head;//头指针
+	public:
+		clist();//初始化
+		int listinsert(int i,int e);//第i个位置插入元素e
+		void listdisplay();//输出单链表
+		~clist();//析构释放链表
+};//链表类
+
+//构造函数
+cnode::cnode(int e,cnode *nextval):data(e),next(nextval)
+{
+	
+}
+//节点类访问接口
+cnode *cnode::getnext() 
+{
+	return next;
+}
+
+int cnode::getdata() 
+{
+	return data;
+} 
+
+void cnode::setdata(int e)
+{
+	data = e;
+	//head = new cnode;//使用头结点的情形
+}
+
+void cnode::setnext(cnode *nextval)
+{
+	next = nextval;
+}
+
+
+//链表类构造函数初始化空表
+clist::clist()
+{
+	head = nullptr;
+}
+
+//第i个元素插入元素e，插入成功(i值范围1~len+1)，返回1，否则返回0
+int clist::listinsert(int i,int e)
+{
+	cnode *s,*p;
+	if(i<1)//结点序号从1开始，插入位置不正确
+		return 0;
+	if(i==1)//第一个位置插入，需要修改head，单独处理
+	{
+		s = new cnode(e,head);//构建新结点s，指向第一个结点
+		head = s;//头指针指向新结点s
+		return 1;
+	}
+	else//非第一个位置插入
+	{
+		p = head;//p指向第一个结点
+		int k = 1;//k计数p结点位置，初始1
+		while(p && k<i-1)//后移p，计数
+		{
+			p = p->getnext();
+			k++; 
+		}
+		if(p)//若存在第i-1个结点，插入
+		{
+			s = new cnode(e,p->getnext());
+			p->setnext(s);
+			return 1;
+		}
+		return 0;//第i-1个结点不存在
+	}
+}
+
+//遍历单链表
+void clist::listdisplay()
+{
+	cnode *p = head;//p指向第一个表结点
+	while(p)//p非空
+	{
+		cout<<p->getdata()<<" ";//输出结点数据
+		p = p->getnext();
+	}
+	cout<<endl;
+}
+//析构函数释放单链表
+clist::~clist()
+{
+	cnode *p,*q;
+	for(p = head;p;)//p初始指向第一个结点，p非空循环
+	{
+		q = p;//q指向p结点
+		p = p->getnext();//p后移
+		delete q;//释放q，注意语句顺序
+	}
+	head = nullptr;
+}
+
+int main()
+{
+	int n ,elem;
+	clist l1;
+	//创建表
+	cin>>n;//元素数
+	for(int i = 0;i<n;i++)
+	{
+		cin>>elem;//元素值
+		l1.listinsert(i+1,elem);//按插入链表	
+	}	
+	
+	//输出链表
+	l1.listdisplay();
+	
+	//测试插入
+	if(!l1.listinsert(10,100))//位置不对，插入不成功
+		cout<<"error"<<endl;
+	else
+		l1.listdisplay();
+	
+	return 0 ;
+	
+	
+}
