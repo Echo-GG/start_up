@@ -1,0 +1,104 @@
+#include <iostream>
+#include <string>
+#include <map>
+using namespace std;
+
+// 日期类
+class CDate
+{
+	int year, month, day;
+
+public:
+	CDate(int y, int m, int d) : year(y), month(m), day(d) {}
+	void print()
+	{
+		cout << year << "." << month << "." << day << endl;
+	}
+};
+
+// 手机类
+class CPhone
+{
+	char type;			   // 类型，A表示机构，B表示企业、C表示个人, D表示备份
+	string number;		   // 电话号码，11位整数
+	int state;			   // 状态，1、2、3分别表示在用、未用、停用
+	CDate *date = nullptr; // 停机日期
+public:
+	// 析构函数
+	~CPhone()
+	{
+		if (date)
+		{
+			delete date;
+		}
+	}
+    // 补齐CPhone的构造函数，拷贝构造函数，输出函数print，停机函数shutdown
+    
+/********** Write your code here! **********/
+
+    CPhone(char type_, string number_, int state_) : type(type_), number(number_), state(state_)
+    {
+        cout << "Construct a new phone " << number << endl;
+    }
+
+    CPhone(const CPhone &other) : type(other.type), number(other.number), state(other.state)
+    {
+        if (other.date) 
+		{
+            date = new CDate(*(other.date));                   
+        }
+        cout << "Construct a copy of phone " << number << endl;
+        type = 'D';
+        number+='X';
+    }
+
+    void print()
+    {
+        map<char, string> typeMap = {{'A', "机构"}, {'B', "企业"}, {'C', "个人"}, {'D', "备份"}};
+        map<int, string> stateMap = {{1, "在用"}, {2, "未用"}, {3, "停用"}};
+        cout << "类型=" << typeMap[type] << "||号码=" << number << "||State=" << stateMap[state] ;
+    }
+
+    void shutdown(const CDate &date_)
+    {
+        state = 3;
+        if (date) 
+		{
+            delete date; 
+        }
+        date = new CDate(date_);
+        cout << "Stop the phone " << number<<endl;
+        print(); 
+        cout << "||停机日期="; 
+        date->print(); 
+    }
+};
+	
+
+
+/*******************************************/
+// 主函数
+int main()
+{
+	int t;
+	char type;	   // 类型，A表示机构，B表示企业、C表示个人, D表示备份
+	string number; // 电话号码
+	int state;	   // 状态，1、2、3分别表示在用、未用、停用
+	int year, month, day;  // 停机日期
+	cin >> t;
+
+	while (t--)
+	{
+		cin >> type >> number >> state >> year >> month >> day;
+
+		CPhone phone(type, number, state); // 构造函数构建对象
+		phone.print();					   // 输出对象，见样例
+		cout << endl;
+		CPhone copyphone(phone); // 拷贝构造对象
+		copyphone.print();		 // 输出对象，见样例
+		cout << endl;
+		phone.shutdown(CDate(year, month, day)); // 停机，输出
+		cout << "----" << endl;
+	}
+	return 0;
+}
