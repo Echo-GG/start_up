@@ -1,0 +1,165 @@
+#include <iostream>
+using namespace std;
+
+struct SNode 
+{
+    int data;
+    SNode *next;
+    SNode(int value, SNode *nextNode = nullptr) : data(value), next(nextNode) {}
+};
+
+class CList 
+{
+	private:
+    	SNode *head;
+public:
+    CList() 
+	{
+        head = nullptr;
+    }
+    void createList(int *value, int n) 
+	{
+        head = nullptr; 
+        SNode *tail = nullptr; 
+        for (int i = 0; i < n; i++) 
+		{
+            SNode *newNode = new SNode(value[i]);  			         
+            if (head == nullptr) 
+			{
+                head = newNode; 
+            }       
+            
+			else 
+			{
+                tail->next = newNode;
+            }
+            tail = newNode; 
+        }
+    }
+    void printList() 
+	{
+        SNode *current = head;
+        while (current != nullptr) 
+		{
+            cout << current->data;
+            if (current->next != nullptr) 
+			{
+                cout << " "; 
+            }
+            current = current->next;
+        }
+        cout << endl;
+    }
+
+    void insertNode(int pos, int value) 
+	{
+        if (pos < 1) 
+		{
+            cout << "error" << endl;
+            return;
+        }
+        SNode *current = head;
+        int count = 1;
+        while (current != nullptr && count < pos) 
+		{
+            current = current->next;
+            count++;
+        }
+        
+		if (current == nullptr) 
+		{
+            cout << "error" << endl;
+            return;
+        }
+        SNode *newNode = new SNode(value);
+        newNode->next = current->next;
+        current->next = newNode;
+        printList(); 
+    }
+
+    void removeNode(int pos) 
+	{
+        if (pos < 1) 
+		{
+            cout << "error" << endl;
+            return;
+        }
+       
+        SNode *current = head;
+        SNode *prev = nullptr;
+        int count = 1;
+        while (current != nullptr && count < pos) 
+		{
+            prev = current;
+            current = current->next;
+            count++;
+        }
+        if (current == nullptr) 
+		{
+            cout << "error" << endl;
+            return;
+        }
+        
+        if (prev == nullptr) 
+		{
+            head = current->next; 
+        }       
+		else 
+		{
+            prev->next = current->next;
+        }
+        delete current;
+        printList(); 
+    }
+    
+    ~CList() 
+	{
+        SNode *current = head;
+        while (current != nullptr) 
+		{
+            SNode *temp = current;
+            current = current->next;
+            delete temp;
+        }
+    }
+};
+
+int main() 
+{
+    int t;
+    cin >> t; 
+    while (t--)
+	{
+        int n;
+        cin >> n;
+        int *value = new int[n];
+        for (int i = 0; i < n; i++) 
+		{
+            cin >> value[i]; 
+        }
+
+        CList list;
+        list.createList(value, n);
+        list.printList();
+
+        int m;
+        cin >> m; 
+        for (int i = 0; i < m; i++) 
+		{
+            int pos, val;
+            cin >> pos >> val; 
+            list.insertNode(pos, val); 
+        }
+
+        int k;
+        cin >> k; 
+        for (int i = 0; i < k; i++) 
+		{
+            int pos;
+            cin >> pos; 
+            list.removeNode(pos); 
+        }
+        delete[] value; 
+    }
+    return 0;
+}
