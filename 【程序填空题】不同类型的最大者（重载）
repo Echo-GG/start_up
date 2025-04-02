@@ -1,0 +1,127 @@
+#include<iostream>
+#include<string.h>
+using namespace std;
+//请补全函数定义
+/********** Write your code here! **********/
+
+int fmax(int a,int b,int c)
+{
+	int max = a;
+	if(b>a)
+	{
+		if(c>b)
+		{
+			max = c;
+		}
+		else
+		{
+			max = b;
+		}
+	}
+	else if(c>a)
+	{
+		max = c;
+	}
+	return max;
+}
+
+double fmax(double a,double b,double c)
+{
+	double max = a;
+	if(b>a)
+	{
+		if(c>b)
+		{
+			max = c;
+		}
+		else
+		{
+			max = b;
+		}
+	}
+	else if(c>a)
+	{
+		max = c;
+	}
+	return max;
+}
+
+char fmax(char a,char b,char c)
+{
+	char max = a;
+	if(b>a)
+	{
+		if(c>b)
+		{
+			max = c;
+		}
+		else
+		{
+			max = b;
+		}
+	}
+	else if(c>a)
+	{
+		max = c;
+	}
+	return max;
+}
+
+const char* fmax(const char* a,const char* b,const char* c)
+{
+	const char* max = a;
+	if(strcmp(b,a)>0)
+	{
+		if(strcmp(c,b)>0)
+		{
+			max = c;
+		}
+		else
+		{
+			max = b;
+		}
+	}
+	else if(strcmp(c,a)>0)
+	{
+		max = c;
+	}
+	return max;
+}
+
+/*******************************************/
+int main()
+{
+	int t;
+	cin >> t;
+	while (t--) {
+		char a;
+		cin >> a;
+		switch (a) {
+		case 'I':
+			int i1, i2, i3, i;
+			cin >> i1 >> i2 >> i3; 
+			i = fmax(i1, i2, i3);
+			cout <<  i << endl;
+			break;
+		case 'D':
+			double d1, d2, d3, d;
+			cin >> d1 >> d2 >> d3;
+			d = fmax(d1, d2, d3);
+			cout << d << endl;
+			break;
+		case 'C':
+			char c1, c2, c3, c;
+			cin.ignore(); cin >> c1 >> c2 >> c3;
+			c = fmax(c1, c2, c3);
+			cout << c << endl;
+            break;
+      	case 'S':
+			char s1[100], s2[100], s3[100], s[100];
+			cin >> s1 >> s2 >> s3;
+			strcpy(s ,fmax(s1, s2, s3));
+			cout << s << endl;
+            break;
+		}
+	}
+	return 0;
+}
