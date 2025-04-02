@@ -1,0 +1,110 @@
+#include <iostream>
+#include <unordered_map>
+using namespace std;
+struct SNode 
+{
+    int data;
+    SNode *next;
+    SNode(int value, SNode *nextNode = nullptr) : data(value), next(nextNode) {}
+};
+
+class CList 
+{
+private:
+    SNode *head; 
+
+public:
+    CList(int *values, int n) 
+	{
+        head = nullptr; 
+        SNode *tail = nullptr;
+        for (int i = 0; i < n; i++) 
+		{
+            SNode *newNode = new SNode(values[i]);
+            if (head == nullptr) 
+			{
+                head = newNode; 
+            } 
+			else 
+			{
+                tail->next = newNode; 
+            }
+            tail = newNode; 
+        }
+    }
+    void removeDuplicates() 
+	{
+        unordered_map<int, int> countMap; 
+        SNode *current = head;
+        SNode *prev = nullptr;
+        while (current != nullptr) 
+		{
+            countMap[current->data]++; 
+            if (countMap[current->data] > 1) 
+			{
+                if (prev) 
+				{
+                    prev->next = current->next;
+                } 			
+				else 
+				{
+                    head = current->next; 
+                }
+                SNode *temp = current;
+                current = current->next;
+                delete temp; 
+            } 
+			else 
+			{
+                prev = current; 
+                current = current->next; 
+            }
+        }
+    }
+ 	void printList() 
+	 {
+        SNode *current = head;
+        while (current != nullptr) 
+		{
+            cout << current->data;
+            if (current->next != nullptr) 
+			{
+                cout << " "; 
+            }
+            current = current->next;
+        }
+        cout << endl;
+    }
+
+    ~CList() 
+	{
+        SNode *current = head;
+        while (current != nullptr) 
+		{
+            SNode *temp = current;
+            current = current->next;
+            delete temp;
+        }
+    }
+};
+
+int main() 
+{
+    int t;
+    cin >> t; 
+    while (t--) 
+	{
+        int n;
+        cin >> n;
+        int *values = new int[n];
+        for (int i = 0; i < n; i++) 
+		{
+            cin >> values[i]; 
+        }
+        CList list(values, n); 
+        list.removeDuplicates(); 
+        list.printList(); 
+        delete[] values; 
+    }
+    return 0;
+}
