@@ -1,0 +1,114 @@
+#include <iostream>
+using namespace std;
+class CDate
+{
+private:
+int year, month, day;
+public:
+CDate(int y, int m, int d) { year = y; month = m; day = d; }
+bool isLeapYear() { return (year%4 == 0 && year%100 != 0) || year%400 == 0; }
+int getYear() { return year; }
+int getMonth() { return month; }
+int getDay() { return day; }
+int getDayofYear()         
+{
+	int i, sum=day;
+	int a[13]={0,31,28,31,30,31,30,31,31,30,31,30,31};
+	int b[13]={0,31,29,31,30,31,30,31,31,30,31,30,31};
+
+	if (isLeapYear())
+	{
+		for(i=0;i<month;i++)   
+		sum +=b[i];
+	}
+	else
+	{
+		for(i=0;i<month;i++)   
+		sum +=a[i];			
+	}
+	return sum;
+}
+};
+class software
+{
+	string name;
+	char type;
+	CDate ddl;
+	char store;
+	public:
+		software(string name_,char type_,CDate ddl_,char store_)
+		{
+			name = name_;
+			type = type_;
+			ddl = ddl_;
+			store = store_;
+		}
+		software(software &other)
+		{
+			name = other.name;
+			type = other.type;
+			ddl = other.ddl;
+			store = other.store;
+			type = 'B';
+			store = 'H';
+		}
+		void print()
+		{
+			cout<<"name"<<name<<endl;
+			cout<<"type:"<<type<<endl;
+			cout<<"media:"<<store<<endl;
+			if(check==1)
+			{
+				cout<<"this software is going to be expired in "<<ddl.getDayofYear()-(31+28+31+7) <<" days"<<endl;
+			}
+			else if(check==0)
+			{
+				cout<<"this software has expired"<<endl;
+			}
+			else if(check==-1)
+			{
+				cout<<"this software has unlimited use"<<endl;
+			}
+		}
+		int check(CDate &ddl)
+		{
+			if(ddl.getDay()==0&&ddl.getMonth()==0&&ddl.getYear()==0)
+			{
+				return -1;
+			}
+			else if(ddl.getYear()<2015)
+			{
+				return 0;
+			}
+			else if(ddl.getYear()==2015&&ddl.getMonth()<4)
+			{
+				return 0;
+			}
+			else if(ddl.getYear()==2015&&ddl.getMonth()==4&&ddl.getDay()<7)
+			{
+				return 0;
+			}
+			else
+			{
+				return 1;
+			}
+		}
+};
+
+int main()
+{
+	int t;
+	cin>>t;
+	string name;
+	char type,store;
+	CDate ddl;
+	while(t--)
+	{
+		cin>>name;
+		cin>>type>>store>>ddl;
+		software M(name,type,store,ddl);
+		M.print();
+	}
+	
+	return 0;
+}
