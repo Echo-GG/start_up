@@ -1,0 +1,40 @@
+#include <iostream>
+#include <algorithm>
+#include <string>
+using namespace std;
+int main()
+{
+	int t;
+	cin>>t;
+	string *s = new string [t];
+	for(int i=0;i<t;i++)
+	{
+		cin>>s[i];
+	}
+	sort(s,s+t,[](string &a,string &b)
+	{
+		return a.length()<b.length();
+	});
+	string s1,s2;
+	if(s[0].length()%2!=0)
+	{
+		s1 = s[0].substr(0,0.5*s[0].length()+1);
+	}
+	else
+	{
+		s1 = s[0].substr(0,0.5*s[0].length());
+	}
+	if(s[t-1].length()%2==0)
+	{
+		s2 = s[t-1].substr(0.5*s[t-1].length(),0.5*s[t-1].length());
+	}
+	else
+	{
+		s2 = s[t-1].substr(0.5*s[t-1].length(),0.5*s[t-1].length()+1);
+	}
+	cout<<s1<<endl;
+	cout<<s2<<endl;
+	delete []s;
+	
+	return 0;
+}
