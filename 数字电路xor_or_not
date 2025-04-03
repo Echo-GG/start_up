@@ -1,0 +1,71 @@
+#include <iostream>
+using namespace std;
+#define N 5
+int NOT(int a)
+{
+	int result = a;
+	if(result%2==0)
+	{
+		result = 1;
+	}
+	else
+	{
+		result = 0;
+	}
+	return result;
+}
+
+int OR(int a,int b)
+{
+	int result = a+b ;
+	if(result !=0)
+	{
+		return 1;
+	}
+	return 0;
+	
+}
+
+int XOR(int a,int b)
+{
+	if(a==b)
+	{
+		return 0;
+	}
+	return 1;
+}
+
+int main()
+{
+	int t;
+	cin>>t;
+	while(t--)
+	{	
+		int num[N];
+		for(int i=0;i<N;i++)
+		{
+			num[i] = 0;
+		}
+		for(int i=0;i<N;i++)
+		{
+			cin>>num[i];
+			if(num[i]!=0&&num[i]!=1)
+			{
+				cout<<"type error"<<endl;
+				break;
+			}
+		}
+		int z,part1,part2,part3,part4;
+		part1 = OR(num[2],num[3]);
+		part1 = NOT(part1);
+		part2 = OR(num[1],part1);
+		part2 = NOT(part2);
+		part3 = OR(num[0],part2);
+		part3 = NOT(part3);
+		part4 = XOR(part3,num[4]);
+		part4 = NOT(part4);
+		z = part4;
+		cout<<z<<endl;	
+	}
+
+}
