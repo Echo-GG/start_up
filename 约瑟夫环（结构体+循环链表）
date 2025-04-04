@@ -1,0 +1,66 @@
+#include <iostream>
+using namespace std;
+
+struct node 
+{
+	int data;
+	node* next;
+};
+
+void create(node*& L, node*& r, int n) 
+{
+	L = new node; 
+	L->data = 1;
+	r = L; 
+	for (int i = 1; i < n; i++) 
+	{
+		node* s = new node; 
+		s->data = i + 1; 
+		r->next = s;
+		r = s; 
+	}
+
+	r->next = L; 
+}
+
+void out(node*& p, node*& pre, int k, int m) 
+{
+	while (--k) 
+	{
+		p = p->next;
+		pre = pre->next;
+	}
+	int i = 1;
+	while (p->next != p) {
+	if (i == m) 
+	{
+		i = 1; 
+		cout << p->data << " ";
+		pre->next = p->next; 
+		delete p; 
+		p = pre->next; 
+	} 
+	else 
+	{ 
+		pre = pre->next;
+		p = p->next; 
+		i++;
+	}
+}
+	cout << p->data << endl;
+}
+
+int main() 
+{
+	int n;
+	while (cin >> n) 
+	{		
+		node* r;
+		node* L;
+		create(L, r, n);
+		int k, m;
+		cin >> k >> m;
+		out(L, r, k, m);	
+	}
+	return 0;
+}
