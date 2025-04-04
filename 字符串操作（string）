@@ -1,0 +1,137 @@
+#include <string>
+#include <iostream>
+using namespace std;
+
+string operation(int, string []);
+
+int main() 
+{
+    string str[40];  
+    int n;         
+    cin >> n; 
+    for (int i = 1; i <= n; i++) 
+	{
+        cin >> str[i];  
+    }
+
+    while (1) 
+	{
+        string result = operation(n, str);  
+        if (result == "over") 
+		{ 
+            break;
+        }
+    }
+
+    return 0;
+}
+
+string operation(int n, string str[]) 
+{
+    string cmd;  
+    cin >> cmd;  
+    if (cmd == "over") 
+	{
+        return "over";  // 如果输入 "over"，结束程序
+    } 
+	else if (cmd == "copy") 
+	{
+        int N = stoi(operation(n, str));  // 递归获取参数
+        int X = stoi(operation(n, str));
+        int L = stoi(operation(n, str));
+        return str[N].substr(X, L);  // 返回子串
+    } 
+	else if (cmd == "add") 
+	{
+        string S1 = operation(n, str); 
+        string S2 = operation(n, str); 
+        int isNum1 = 1, isNum2 = 1;
+        for (char c : S1) 
+		{
+            if (!isdigit(c)) 
+			{
+                isNum1 = 0;
+                break;
+            }
+        }
+        for (char c : S2) 
+		{
+            if (!isdigit(c)) 
+			{
+                isNum2 = 0;
+                break;
+            }
+        }
+
+        if (isNum1 && isNum2) 
+		{
+            int num1 = stoi(S1), num2 = stoi(S2);
+            return to_string(num1 + num2);  
+        } 
+		else 
+		{
+            return S1 + S2;  
+        }
+    } 
+	else if (cmd == "find") 
+	{
+        string S = operation(n, str);  
+        int N = stoi(operation(n, str)); 
+        size_t pos = str[N].find(S); 
+        if (pos != string::npos) 
+		{
+            return to_string(pos);  
+        } 
+		else 
+		{
+            return to_string(str[N].length()); 
+        }
+    } 
+	else if (cmd == "rfind") 
+	{
+        string S = operation(n, str); 
+        int N = stoi(operation(n, str)); 
+        size_t pos = str[N].rfind(S);  
+        if (pos != string::npos) 
+		{
+            return to_string(pos);  
+        } 
+		else 
+		{
+            return to_string(str[N].length());  
+        }
+    } 
+	else if (cmd == "insert") 
+	{
+        string S = operation(n, str); 
+        int N = stoi(operation(n, str));  
+        int X = stoi(operation(n, str)); 
+        str[N].insert(X, S); 
+        return "";
+    } 
+	else if (cmd == "reset") 
+	{
+        string S = operation(n, str);  
+        int N = stoi(operation(n, str)); 
+        str[N] = S;  
+        return ""; 
+    } 
+	else if (cmd == "print") 
+	{
+        int N = stoi(operation(n, str)); 
+        cout << str[N] << endl; 
+        return "";  
+    } 
+	else if (cmd == "printall") 
+	{
+        for (int i = 1; i <= n; i++) 
+		{
+            cout << str[i] << endl; 
+        }
+        return ""; 
+    } 
+	else 
+	{
+        return cmd;  
+    }
+}
