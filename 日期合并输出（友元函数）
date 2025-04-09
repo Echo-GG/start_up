@@ -1,0 +1,49 @@
+#include <iostream>
+#include <iomanip>
+using namespace std;
+class CTime;
+class CDate
+{
+	private:int year,month,day;
+	friend void Display(CDate &a,CTime &b);
+	public:
+		CDate(int year_,int month_,int day_):year(year_),month(month_),day(day_)
+		{
+			
+		}
+};
+
+class CTime
+{
+	private:int hour,min,second;
+	friend void Display(CDate &a,CTime &b);
+	public:
+		CTime(int hour_,int min_,int second_):hour(hour_),min(min_),second(second_)
+		{
+			
+		}
+		
+};
+void Display(CDate &a,CTime &b)
+{
+	cout<<a.year<<"-"<<setw(2)<<setfill('0')<<a.month<<"-"<<setw(2)<<setfill('0')<<a.day<<" ";
+	cout<<setw(2)<<setfill('0')<<b.hour<<":"<<setw(2)<<setfill('0')<<b.min<<":"<<setw(2)<<setfill('0')<<b.second<<endl;
+}
+int main()
+{
+	int t;
+	cin>>t;
+	while(t--)
+	{
+		int y,m,d;
+		cin>>y>>m>>d;
+		CDate date(y,m,d);
+		int hour,min,second;
+		cin>>hour>>min>>second;
+		CTime time(hour,min,second);
+		Display(date,time);
+	}
+	
+	
+	return 0;
+}
