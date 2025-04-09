@@ -1,0 +1,49 @@
+#include <iostream>
+#include <cmath>
+using namespace std;
+class CTime{
+	private:
+		int hour,min,second;
+		public:
+			int geth()
+			{
+				return hour;
+			}
+			int getm()
+			{
+				return min;
+			}
+			int gets()
+			{
+				return second;
+			}
+			CTime(int h,int m,int s):hour(h),min(m),second(s)
+			{
+				
+			}
+			friend int delta(CTime &a,CTime &b);
+			
+};
+int delta(CTime &a,CTime &b)
+{
+	int result;
+	result = (a.hour-b.hour)*3600+(a.min-b.min)*60+(a.second-b.second)*1;
+	return fabs(result);
+}
+int main()
+{
+	int n;
+	cin>>n;
+	while(n--)
+	{
+		int a1,b1,c1;
+		int a2,b2,c2;
+		cin>>a1>>b1>>c1;
+		cin>>a2>>b2>>c2;
+		CTime t1(a1,b1,c1);
+		CTime t2(a2,b2,c2);
+		double result = delta(t1,t2);
+		cout<<a1<<"时"<<b1<<"分"<<c1<<"秒--"<<a2<<"时"<<b2<<"分"<<c2<<"秒"<<"时间差为"<<result<<"秒"<<endl;
+	}
+	
+}
