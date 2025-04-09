@@ -1,0 +1,82 @@
+#include <iostream>
+#include <cstring>
+using namespace std;
+
+class STR {
+private:
+    char* s; 
+
+   
+    void backward(char* t1, char* t2) 
+	{
+        while (t1 < t2) 
+		{
+            char temp = *t1;
+            *t1 = *t2;
+            *t2 = temp;
+            t1++;
+            t2--;
+        }
+    }
+
+public:
+    STR(char* t) 
+	{
+        cout << "constructing..." << endl;
+        int len = strlen(t);
+        s = new char[len + 1];
+        strcpy(s, t);
+    }
+
+    STR(const STR& obj) 
+	{
+        cout << "copy constructing..." << endl;
+        int len = strlen(obj.s);
+        s = new char[len + 1];
+        strcpy(s, obj.s);
+    }
+
+    void fun() 
+	{
+        char* start = s;
+        char* end = s;
+
+        while (*end) 
+		{
+            while (*end && !isalpha(*end)) 
+			{
+                end++;
+            }
+            start = end;
+            while (*end && isalpha(*end)) 
+			{
+                end++;
+            }
+
+            backward(start, end - 1);
+        }
+    }
+
+    void print() 
+	{
+        cout << s << " can be tranformed to ";
+        fun();
+        cout << s << endl;
+    }
+
+    ~STR() 
+	{
+        cout << "delete space..." << endl;
+        delete[] s;
+    }
+};
+
+int main() {
+    char input[1000];
+    cin.getline(input, 1000); 
+    STR obj(input);
+    STR objcopy(obj);
+    objcopy.print();
+
+    return 0;
+}
