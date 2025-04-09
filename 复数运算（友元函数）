@@ -1,0 +1,68 @@
+#include <iostream>
+using namespace std;
+class complex{
+	private:
+		double real;
+		double imag;
+	public:
+		complex()
+		{
+			real = 0;
+			imag = 0;
+		}
+		complex(double r,double i)
+		{
+			real = r;
+			imag = i;
+		}
+		friend complex addCom(complex c1,complex c2);
+		friend complex minusCom(complex c1,complex c2);
+		friend void outCom(complex c);
+};
+complex addCom(complex c1,complex c2)
+{
+	complex c;
+	c.real = c1.real+c2.real;
+	c.imag = c1.imag+c2.imag;
+	return c;
+}
+complex minusCom(complex c1,complex c2)
+{
+	complex c;
+	c.real = c1.real-c2.real;
+	c.imag = c1.imag-c2.imag;
+	return c;
+}
+void outCom(complex c)
+{
+	cout<<"("<<c.real<<","<<c.imag<<")"<<endl;
+}
+int main()
+{
+	int r,i;
+	cin>>r>>i;
+	complex c1(r,i);
+	int t;
+	cin>>t;
+	while(t--)
+	{
+		char type;
+		cin>>type;
+		int r_,i_;
+		cin>>r_>>i_;
+		complex c2(r_,i_);
+		complex result;
+		if(type=='+')
+		{
+			result = addCom(c1,c2);
+		}
+		else if(type=='-')
+		{
+			result = minusCom(c1,c2);
+		}
+		outCom(result);
+		c1 = result;
+	}
+	
+	return 0;
+}
