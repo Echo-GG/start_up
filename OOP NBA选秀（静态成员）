@@ -1,0 +1,83 @@
+#include <iostream>
+using namespace std;
+class Player
+{
+	private:
+	string name;
+	string pos;
+	int score;
+	public:
+	Player(string name_,string pos_,int score_)
+	{
+		name = name_;
+		pos = pos_;
+		score =score_;
+	}	
+	static int PG;
+	static int SG;
+	static int SF;
+	static int PF;
+	static int C;
+	void Display()
+	{
+	
+		cout<<"Name:"<<name<<" Position:"<<pos<<" Rate:"<<score<<endl;
+	}
+};
+int Player::PG = 0;
+int Player::SG = 0;
+int Player::SF = 0;
+int Player::PF = 0;
+int Player::C = 0;
+
+int main()
+{
+	Player* players[100];
+	int playerCount = 0;
+	while(1)
+	{
+		string name;
+		string pos;
+		int score;
+		cin>>name;
+		if(name=="0")
+		{
+			break;
+		}
+		cin>>pos>>score;
+		
+		players[playerCount++] = new Player(name, pos, score);
+		if(pos=="PG")
+		{
+			Player::PG++;
+		}
+		else if(pos=="SG")
+		{
+			Player::SG++;
+		}
+		else if(pos=="SF")
+		{
+			Player::SF++;
+		}
+		else if(pos=="PF")
+		{
+			Player::PF++;
+		}
+		else if(pos=="C")
+		{
+			Player::C++;
+		}
+	}
+	for (int i = 0; i < playerCount; ++i)
+    {
+        players[i]->Display();
+    }
+    cout<<endl;
+	cout<<"Total PG Player:"<<Player::PG<<endl;
+	cout<<"Total SG Player:"<<Player::SG<<endl;
+	cout<<"Total SF Player:"<<Player::SF<<endl;
+	cout<<"Total PF Player:"<<Player::PF<<endl;
+	cout<<"Total C Player:"<<Player::C<<endl;
+	
+	return 0;
+}
