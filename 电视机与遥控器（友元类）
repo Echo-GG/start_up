@@ -1,0 +1,175 @@
+#include <iostream>
+#include <string>
+using namespace std;
+class Remote;
+class Tv{
+	private:
+		
+		int volume;
+		int maxchannel;
+		int channel;
+		string mode;
+		string input;
+		friend class Remote;
+	public:
+	    Tv(string s, int vol, int chan, string m, string in)
+        : state(s), volume(vol), maxchannel(100), channel(chan), mode(m), input(in) {}
+        string state;
+		void onoff()
+		{
+			if(state=="on")
+			{
+				state="off";
+			}
+			else if(state=="off")
+			{
+				state="on";
+			}
+		}
+		bool ison()const
+		{
+			if(state=="on")
+				return true;
+			else
+				return false;
+		}
+		int volup()
+		{
+			volume++;
+			return volume;
+		}
+		int voldown()
+		{
+			volume--;
+			return volume;
+		}
+		void chanup()
+		{
+			channel++;
+		}
+		void chandown()
+		{
+			channel--;
+		}
+		void set_mode()
+		{
+			if(mode=="Cable")
+			{
+				mode = "Antenna";
+			}
+			else if(mode=="Antenna")
+			{
+				mode = "Cable";
+			}
+		}
+		void set_input()
+		{
+			if(input=="VCR")
+			{
+				input = "TV";
+			}
+			else if(input=="TV")
+			{
+				input = "VCR";
+			}
+		}
+		void settings()const
+		{
+			cout<<state<<" "<<volume<<" "<<channel<<" "<<mode<<" "<<input<<endl;
+		}
+};
+class Remote{
+	public:
+		int volup(Tv &t)
+		{
+			return t.volup();
+		}
+		int voldown(Tv &t)
+		{
+			return t.voldown();
+		}
+		void onoff(Tv &t)
+		{
+			t.onoff();
+		}
+		void chanup(Tv &t)
+		{
+			t.chanup();
+		}
+		void chandown(Tv &t)
+		{
+			t.chandown();
+		}
+		void set_chan(Tv &t,int c)
+		{
+			t.channel = c;
+		}
+		void set_mode(Tv &t)
+		{
+			t.set_mode();
+		}
+		void set_input(Tv &t)
+		{
+			t.set_input();
+		}
+};
+int main()
+{
+	string state;
+	int volume;
+	int maxchannel;
+	int channel;
+	string mode;
+	string input;	
+	cin>>state;
+
+	cin>>volume>>channel>>mode>>input;
+
+	Tv tv(state,volume,channel,mode,input);
+	string command;
+	Remote remote;		
+	while(cin>>command)
+//	for(int i=0;i<5;i++)
+	{
+	
+		if (command == "volup") 
+		{
+			if(tv.state=="on")
+            	remote.volup(tv);
+        } 
+		else if (command == "voldown") 
+		{
+			if(tv.state=="on")
+            	remote.voldown(tv);
+        } 
+		else if (command == "onoff") 
+		{	
+            remote.onoff(tv);
+        } 
+		else if (command == "chanup") 
+		{
+			if(tv.state=="on")
+            	remote.chanup(tv);
+        } 
+		else if (command == "chandown") 
+		{
+			if(tv.state=="on")
+           		remote.chandown(tv);
+        } 
+		else if (command == "set_mode") 
+		{	
+			if(tv.state=="on")
+            	remote.set_mode(tv);
+        } 
+		else if (command == "set_input") 
+		{
+			if(tv.state=="on")
+            	remote.set_input(tv);
+        } 
+//		cout<<"here"<<endl;
+	}
+	tv.settings();
+	
+	
+	return 0;
+}
