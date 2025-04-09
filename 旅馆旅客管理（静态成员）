@@ -1,0 +1,76 @@
+#include <iostream>
+#include <iomanip>
+using namespace std;
+class Customer
+{
+	private:
+		static int TotalCustNum;
+		static int Rent;
+		static int Year;
+		int CustID;
+		static int nextID;
+		string Custname;	
+	public:
+		Customer()
+		{
+			
+		}
+		Customer(string name):CustID(nextID++)
+		{
+
+			Custname = name;
+			TotalCustNum++;
+		}
+
+		~Customer()
+		{
+			
+		}
+		static void changeYear(int y);
+
+		void Display()
+		{
+			cout<<Custname<<" "<<Year<<setw(4)<<setfill('0')<<CustID<<" "<<TotalCustNum<<" "<<Rent*TotalCustNum<<endl;
+		}
+	
+};	
+void Customer::changeYear(int y)
+{
+	Year = y;
+}
+int Customer::Rent = 150;
+int Customer::TotalCustNum= 0;
+int Customer::Year = 2014; 
+int Customer::nextID = 1;
+int main()
+{
+	int t;
+	cin>>t;
+	while(t--)
+	{
+		int year;
+		cin>>year;
+		Customer::changeYear(year);
+		string name[100];
+		int cnt = 0;
+ 		while (true) 
+		 {
+            cin >> name[cnt];
+            if (name[cnt] == "0") 
+			{
+                break;
+            }
+            cnt++;
+        }
+		Customer* customer = new Customer [cnt];
+		for(int i=0;i<cnt;i++)
+		{
+			customer[i] = Customer(name[i]);
+			customer[i].Display();
+		}
+	
+		delete []customer;
+	}
+	
+	return 0;
+}
