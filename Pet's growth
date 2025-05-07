@@ -1,0 +1,159 @@
+#include <iostream>
+#include <string>
+#include <iomanip>
+using namespace std;
+
+class CDate 
+{
+private:
+    int year;
+    int month;
+    int day;
+
+    bool isLeapYear(int y) const 
+    {
+        return (y % 4 == 0 && y % 100 != 0) || (y % 400 == 0);
+    }
+
+    int getDaysInMonth(int y, int m) const 
+    {
+        const int daysOfMonth[] = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
+        if (m == 2 && isLeapYear(y)) 
+        {
+            return 29;
+        }
+        return daysOfMonth[m - 1];
+    }
+
+public:
+    CDate(int y = 0, int m = 0, int d = 0) : year(y), month(m), day(d) {}
+
+    void set(int y, int m, int d) 
+    {
+        year = y;
+        month = m;
+        day = d;
+    }
+
+    int getYear() const { return year; }
+    int getMonth() const { return month; }
+    int getDay() const { return day; }
+
+    int daysBetween(const CDate& other) const 
+    {
+        int days1 = 0, days2 = 0;
+        for (int y = 1; y < year; y++) 
+        {
+            days1 += isLeapYear(y) ? 366 : 365;
+        }
+        for (int m = 1; m < month; m++) 
+        {
+            days1 += getDaysInMonth(year, m);
+        }
+        days1 += day;
+
+        for (int y = 1; y < other.year; y++) 
+        {
+            days2 += isLeapYear(y) ? 366 : 365;
+        }
+        for (int m = 1; m < other.month; m++) 
+        {
+            days2 += getDaysInMonth(other.year, m);
+        }
+        days2 += other.day;
+
+        return days2 - days1;
+    }
+};
+
+class Pet 
+{
+protected:
+    string name;
+    float length;
+    float weight;
+    CDate current;
+
+public:
+    Pet(string n, float l, float w, CDate c) : name(n), length(l), weight(w), current(c) {}
+    virtual void display(CDate day) = 0;
+};
+
+class Cat : public Pet 
+{
+public:
+    Cat(string n, float l, float w, CDate c) : Pet(n, l, w, c) {}
+
+    void display(CDate day) override 
+    {
+        int days = current.daysBetween(day);
+        if (days < 0) 
+        {
+            cout << "error" << endl;
+            return;
+        }
+        float newLength = length + days * 0.1;
+        float newWeight = weight + days * 0.2;
+        cout << name << " after " << days << " day: length=" << fixed << setprecision(2) << newLength << ",weight=" << newWeight << endl;
+    }
+};
+
+class Dog : public Pet 
+{
+public:
+    Dog(string n, float l, float w, CDate c) : Pet(n, l, w, c) {}
+
+    void display(CDate day) override 
+    {
+        int days = current.daysBetween(day);
+        if (days < 0) 
+        {
+            cout << "error" << endl;
+            return;
+        }
+        float newLength = length + days * 0.2;
+        float newWeight = weight + days * 0.1;
+        cout << name << " after " << days << " day: length=" << fixed << setprecision(2) << newLength << ",weight=" << newWeight << endl;
+    }
+};
+
+int main() 
+{
+    int t;
+    cin >> t;
+
+    int startYear, startMonth, startDay;
+    cin >> startYear >> startMonth >> startDay;
+    CDate startDate(startYear, startMonth, startDay);
+
+    for (int i = 0; i < t; i++) 
+    {
+        int type;
+        string name;
+        float length, weight;
+        int year, month, day;
+
+        cin >> type >> name >> length >> weight >> year >> month >> day;
+
+        Pet* pt = nullptr;
+        if (type == 1) 
+        {
+            pt = new Cat(name, length, weight, startDate);
+        }
+        else if (type == 2) 
+        {
+            pt = new Dog(name, length, weight, startDate);
+        }
+        else 
+        {
+            cout << "error" << endl;
+            continue;
+        }
+
+        CDate measureDate(year, month, day);
+        pt->display(measureDate);
+        delete pt;
+    }
+
+    return 0;
+}
