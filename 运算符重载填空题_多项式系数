@@ -1,0 +1,222 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+#define N 100  // 多项式项大小，最多100项
+
+class cpoly;  // 声明多项式类
+
+class cpolyitem {
+    int coef;
+    int expn;
+
+public:
+    cpolyitem(int _coef = 0, int _expn = 0) : coef(_coef), expn(_expn) {}
+    friend class cpoly;
+    friend cpoly operator-(const cpoly &lhs, const cpoly &rhs);
+    friend cpoly operator*(const cpoly &lhs, const cpoly &rhs);
+    
+    int get_coef()
+	{
+		return coef;
+	}
+	int get_expn()
+	{
+		return expn;
+	}
+};
+
+class cpoly {
+    cpolyitem *data;
+    int n;
+
+    void deepCopy(const cpoly &other) {
+        n = other.n;
+        data = new cpolyitem[N];
+        for (int i = 0; i < n; ++i) {
+            data[i] = other.data[i];
+        }
+    }
+
+public:
+    cpoly() : n(0), data(new cpolyitem[N]) {}
+    ~cpoly() { delete[] data; }
+	
+    cpoly(const cpoly &other) { deepCopy(other); }
+
+    cpoly &operator=(const cpoly &other) {
+        if (this != &other) {
+            delete[] data;
+            deepCopy(other);
+        }
+        return *this;
+    }
+
+    cpoly operator+(const cpoly &rhs);
+    friend cpoly operator-(const cpoly &lhs, const cpoly &rhs);
+    friend cpoly operator*(const cpoly &lhs, const cpoly &rhs);
+    friend istream &operator>>(istream &in, cpoly &p);
+    friend ostream &operator<<(ostream &out, const cpoly &p);
+};
+
+cpoly cpoly::operator+(const cpoly &rhs) {
+    cpoly result;
+    int i = 0, j = 0, k = 0;
+    while (i < n && j < rhs.n) {
+        if (data[i].expn < rhs.data[j].expn) {
+            result.data[k++] = data[i++];
+        } else if (data[i].expn > rhs.data[j].expn) {
+            result.data[k++] = rhs.data[j++];
+        } else {
+            int sum_coef = data[i].coef + rhs.data[j].coef;
+            if (sum_coef != 0) {
+                result.data[k++] = cpolyitem(sum_coef, data[i].expn);
+            }
+            i++;
+            j++;
+        }
+    }
+    while (i < n) result.data[k++] = data[i++];
+    while (j < rhs.n) result.data[k++] = rhs.data[j++];
+    result.n = k;
+    return result;
+}
+
+cpoly operator-(const cpoly &lhs, const cpoly &rhs) {
+    cpoly result;
+    int i = 0, j = 0, k = 0;
+    while (i < lhs.n && j < rhs.n) {
+        if (lhs.data[i].expn < rhs.data[j].expn) {
+            result.data[k++] = lhs.data[i++];
+        } else if (lhs.data[i].expn > rhs.data[j].expn) {
+            result.data[k++] = cpolyitem(-rhs.data[j].coef, rhs.data[j].expn);
+            j++;
+        } else {
+            int diff_coef = lhs.data[i].coef - rhs.data[j].coef;
+            if (diff_coef != 0) {
+                result.data[k++] = cpolyitem(diff_coef, lhs.data[i].expn);
+            }
+            i++;
+            j++;
+        }
+    }
+    while (i < lhs.n) result.data[k++] = lhs.data[i++];
+    while (j < rhs.n) {
+        result.data[k++] = cpolyitem(-rhs.data[j].coef, rhs.data[j].expn);
+        j++;
+    }
+    result.n = k;
+    return result;
+}
+
+cpoly operator*(const cpoly &lhs, const cpoly &rhs) {
+    cpoly result;
+    cpolyitem temp[N * N];
+    int temp_count = 0;
+    for (int i = 0; i < lhs.n; ++i) {
+        for (int j = 0; j < rhs.n; ++j) {
+            temp[temp_count++] = cpolyitem(
+                lhs.data[i].coef * rhs.data[j].coef,
+                lhs.data[i].expn + rhs.data[j].expn
+            );
+        }
+    }
+    sort(temp, temp + temp_count, [](const cpolyitem &a, const cpolyitem &b) {
+        return a.expn < b.expn;
+    });
+    int k = 0;
+    for (int i = 0; i < temp_count;) {
+        int current_expn = temp[i].expn;
+        int sum_coef = 0;
+        while (i < temp_count && temp[i].expn == current_expn) {
+            sum_coef += temp[i++].coef;
+        }
+        if (sum_coef != 0) {
+            result.data[k++] = cpolyitem(sum_coef, current_expn);
+        }
+    }
+    result.n = k;
+    return result;
+}
+
+istream &operator>>(istream &in, cpoly &p) {
+    p.n = 0;
+    int num, coef, expn;
+    in >> num;
+    for (int i = 0; i < num; ++i) {
+        in >> coef >> expn;
+        p.data[p.n++] = cpolyitem(coef, expn);
+    }
+    return in;
+}
+
+ostream &operator<<(ostream &out, const cpoly &p) {
+    if (p.n == 0) {
+        out << "0";
+        return out;
+    }
+    bool first = true;
+    for (int i = 0; i < p.n; ++i) {
+        int coef = p.data[i].get_coef();
+        int expn = p.data[i].get_expn();
+        if (coef == 0) continue;
+
+        // 处理符号
+        if (first) {
+            if (coef < 0) out << "-";
+        } else {
+            out << (coef > 0 ? "+" : "-");
+        }
+        if (!first) coef = abs(coef);
+
+        // 处理系数和指数
+        if (expn == 0) {
+            out << abs(coef);
+        } else {
+            if (abs(coef) != 1) out << abs(coef);
+            out << "x";
+            if (expn != 1) out << "^" << expn;
+        }
+        first = false;
+    }
+    if (first) out << "0";
+    return out;
+}
+
+void print(ostream &out, const cpoly &rhs) {
+    out << rhs << endl;
+}
+
+int main() {
+  	ifstream fin;
+	ofstream fout;
+	fin.close();
+	fout.close();
+    int t;
+    fin >> t;
+    while (t--) {
+        cpoly p1, p2, res;
+        fin >> p1 >> p2;
+        print(fout, p1 + p2);
+        print(fout, p1 - p2);
+        print(fout, p1 * p2);
+    }
+    
+    fin.close();
+    fout.close();
+    return 0;
+}
+/*
+test samples:
+2
+3 -9 0 4 1 -3 5
+1 -7 0
+2 1 0 -1 3
+3 1 0 1 1 -1 2
+expected outputs:
+-16+4x-3x^5
+-2+4x-3x^5
+63-28x+21x^5
+2+x-x^2-x^3
+-x+x^2-x^3
+1+x-x^2-x^3-x^4+x^5
+*/
