@@ -1,0 +1,104 @@
+#include <iostream>
+using namespace std;
+
+// Animal基类
+class Animal
+{
+protected:
+    int weight; 
+public:
+    Animal(int wval):weight(wval){};
+    void display()
+    {
+        cout << "Animal:" << endl << "weight:" << weight << endl << endl;
+    }
+};
+// Horse类，从Animal类公有派生。补齐Horse类定义语句。
+
+/********** Write your code here! **********/
+class Horse : virtual public Animal
+/*******************************************/
+{
+protected:          
+    int distance;      // 新增成员
+public:             
+    Horse(int,int);    // Horse类构造函数声明，初始化weight， distance
+    void display()     // 输出函数已给出
+    {
+        cout << "Horse:" << endl << "weight:" << weight << endl << "distance:" << distance << endl << endl;
+    }
+};
+
+// Bird类，从Animal类公有派生。补齐Bird类定义语句。
+/********** Write your code here! **********/
+class Bird : virtual public Animal
+/*******************************************/
+{
+protected:
+    int height;        // 新增成员
+public:
+    Bird(int,int);     // Bird类构造函数声明，初始化weight，height
+    void display()     // 输出函数已给出
+    {
+        cout << "Bird:" << endl << "weight:" << weight << endl << "height:" << height << endl << endl;
+    }
+};
+
+// Pegasus类，从Horse和Bird公有派生，补齐Pegasus类定义
+/********** Write your code here! **********/
+class Pegasus : virtual public Animal, public Horse, public Bird
+/*******************************************/
+{
+protected:
+    bool state;         // 新增成员
+public:
+    Pegasus(int,int,int,int);    // Pegasus类构造函数声明，初始化weight,distance,height,state
+    void display()      // 输出函数已给出
+    {
+        cout << "Pegasus:" << endl << "weight:" << weight << endl << "distance:" << distance << endl;
+        cout << "height:" << height << endl;
+        cout << "In the air?" << endl << (state ? "true": "false") << endl;
+        cout << "On land?" << endl << (!state ? "true" : "false") << endl;
+    
+    }
+};
+
+// 补齐Horse类构造函数实现,空函数体已给出
+Horse::Horse(int weight,int dval):
+/********** Write your code here! **********/
+Animal(weight), distance(dval)
+/*******************************************/
+{}
+// 补齐Bird类构造函数实现，空函数体已给出
+Bird::Bird(int weight,int hval):
+/********** Write your code here! **********/
+Animal(weight), height(hval)
+/*******************************************/
+{}
+// 补齐Pegasus类构造函数实现，空函数体已给出
+Pegasus::Pegasus(int weight,int distance,int height,int sval):
+/********** Write your code here! **********/
+Animal(weight), Horse(weight,distance), Bird(weight,height), state(sval)
+/*******************************************/
+{}
+// 主函数
+int main()
+{
+    int weight, distance, height, state;
+
+    cin >> weight >> distance >> height >> state;
+
+    Animal animal(weight);
+    animal.display();
+
+    Horse horse(weight,distance);
+    horse.display();
+
+    Bird bird(weight,height);
+    bird.display();
+
+    Pegasus pegasus(weight,distance,height,state);
+    pegasus.display();
+
+    return 0;
+}
