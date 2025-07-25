@@ -1,0 +1,56 @@
+#include <iostream>
+using namespace std;
+class Student{
+    private:
+        string name;
+        int score;
+    public:
+        Student() : name(""), score(0) {}
+        Student(string n, int s) : name(n), score(s) {}
+        friend class Teacher;
+        string getName() const { return name; }
+
+};
+class Teacher{
+    public:
+        void updateScore(Student &s, int newScore) {
+            s.score = newScore;
+        }
+        void printScore(const Student &s) const {
+            cout << s.name << " " << s.score << endl;
+        }
+};
+int main()
+{
+    int M;
+    cin >> M;
+    Student* students = new Student[M];
+    Teacher teacher;
+    for(int i = 0; i < M; i++)
+    {
+        string name;
+        int score;
+        cin >> name >> score;
+        students[i]= Student(name, score);
+    }
+    int N;
+    cin >> N;
+    while(N--)
+    {
+        string name;
+        int newScore;
+        cin >> name >> newScore;
+        for(int i = 0; i < M; i++)
+        {
+            if(students[i].getName() == name)
+            {
+                teacher.updateScore(students[i], newScore);
+                break;
+            }
+        }
+       
+    }
+    for(int i = 0; i < M; i++)
+            teacher.printScore(students[i]);
+    return 0;
+}
