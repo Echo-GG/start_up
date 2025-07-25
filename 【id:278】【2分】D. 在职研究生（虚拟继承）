@@ -1,0 +1,90 @@
+#include <iostream>
+
+using namespace std;
+class CPeople{
+protected:
+    string name;
+    int age;
+    char sex;
+public:
+    CPeople(string n, int a, char s) : name(n), age(a),sex(s) {}
+    void display() const {
+        
+        cout << "Name: " << name << endl;
+        cout << "Sex: " << sex << endl;
+        cout << "Age: " << age << endl;
+    }
+
+};
+class CStudent : virtual public CPeople {
+protected:   
+    float score;
+    string studnetID;
+public:
+    CStudent(string n, int a, char s, float sc, string id) 
+        : CPeople(n, a, s), score(sc), studnetID(id) {}
+    void display() const {
+        CPeople::display(); 
+        cout << "No.: " << studnetID << endl;
+        cout << "Score: " << score << endl;
+    }
+};
+class CTeacher : virtual public CPeople {
+protected:    
+    string position;
+    string department;
+public:   
+     CTeacher(string n, int a, char s, string pos, string dept) 
+        : CPeople(n, a, s), position(pos), department(dept) {}
+    void display() const {
+        CPeople::display(); 
+        cout << "Position: " << position << endl;
+        cout << "Department: " << department << endl;
+    }
+};
+class CGradOnWork:virtual public CPeople, public CStudent, public CTeacher {
+private:
+    string direction;
+    string tutor;
+public:
+    CGradOnWork(string n, int a, char s, float sc, string id, 
+                string pos, string dept, string dir, string tut) 
+        : CPeople(n,a,s),CStudent(n, a, s, sc, id), CTeacher(n, a, s, pos, dept), 
+          direction(dir), tutor(tut) {}
+    void display() const {
+    	cout<<"People:"<<endl;
+    	CPeople::display();
+    	cout<<endl;
+    	cout<<"Student:"<<endl;
+        CStudent::display();   
+        cout<<endl;
+		cout<< "Teacher:" << endl;
+        CTeacher::display();
+        cout<<endl;
+        cout<<"GradOnWork:"<<endl;
+    
+        CPeople::display();
+        cout << "No.: " << studnetID << endl;
+        cout << "Score: " << score << endl;
+        cout << "Position: " << position << endl;
+        cout << "Department: " << department << endl;
+        cout << "Direction: " << direction << endl;
+        cout << "Tutor: " << tutor << endl;
+        cout << endl;
+    }
+
+};
+int main() {
+    string name, position, department, direction, tutor;
+    char sex;
+    int age;
+    cin>> name >> sex >> age;
+    float score;    
+    string studentID;
+    cin >> studentID >> score;
+    cin >> position >> department;
+    cin >> direction >> tutor;
+    CGradOnWork obj(name,age,sex,score,studentID,position,department,direction,tutor);
+    obj.display();
+    return 0;
+}
