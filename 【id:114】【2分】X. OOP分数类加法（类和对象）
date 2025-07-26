@@ -1,0 +1,61 @@
+#include<iostream>
+using namespace std;
+int gcd(int a,int b)
+{
+	while(a%b!=0)
+	{
+		int temp = a;
+		a = b;
+		b = temp%b;
+	}
+	return b;
+}
+int lcm(int a,int b)
+{
+	return (a*b)/gcd(a,b);
+}
+class Fract{
+private:
+	int son,mom;
+public:
+	Fract(){}
+	Fract(int a,int b):son(a),mom(b){}
+	Fract Add(Fract& other)
+	{
+		int coson = 0;
+		int comom = 0;
+		comom = lcm(mom,other.mom);
+		int d1 = comom/mom;
+		int d2 = comom/other.mom;
+		son *= d1;
+		other.son *= d2;
+		coson = son + other.son;
+		int D = gcd(comom,coson);
+		comom/= D;
+		coson/= D;
+		Fract result(coson,comom);
+		return result;
+	}
+	void Print()
+	{
+		cout<<son<<"/"<<mom<<endl;
+	}
+};
+
+int main()
+{
+	int t;
+	cin>>t;
+	while(t--)
+	{
+		int s1,m1,s2,m2;
+		cin>>s1>>m1>>s2>>m2;
+		Fract f1(s1,m1);
+		Fract f2(s2,m2);
+		Fract result = f1.Add(f2);
+		result.Print();
+	}
+	
+	
+	return 0;
+}
