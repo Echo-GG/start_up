@@ -1,0 +1,37 @@
+#include <iostream>
+#include <algorithm>
+using namespace std;
+class Cat{
+private:
+    string name;
+    int weight;
+public:
+    Cat() : name(""), weight(0) {}
+    Cat(string n, int w) : name(n), weight(w) {}
+    string getName() const { return name; }
+    int getWeight() const { return weight; }
+};
+int main() {
+    int N;
+    cin >> N;
+    Cat* cats = new Cat[N];
+    for(int i = 0; i < N; i++) {
+        string name;
+        int weight;
+        cin >> name >> weight;
+        cats[i] = Cat(name, weight);
+    }
+    sort(cats, cats + N, [](const Cat& a, const Cat& b) {
+        return a.getWeight() < b.getWeight();
+    });
+    // 输出所有猫的信息
+    for(int i = 0; i < N; i++) {
+        if(i!=N-1)
+            cout << cats[i].getName() <<" ";
+        else
+            cout << cats[i].getName()<<endl;
+        }
+    
+    delete[] cats; // 释放动态分配的内存
+    return 0;
+}
