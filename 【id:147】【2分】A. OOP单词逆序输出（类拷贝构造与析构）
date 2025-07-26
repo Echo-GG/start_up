@@ -1,0 +1,83 @@
+#include <iostream>
+#include <cstring>
+using namespace std;
+
+class STR {
+private:
+    char* s;
+    void backward(char* t1, char* t2); // 将指针t1、t2之间的字符逆序
+
+public:
+    STR(char* t); // 构造函数
+    STR(const STR& obj); // 拷贝构造函数
+    void fun(); // 处理字符串，将各英文单词逆序
+    void print(); // 输出字符串
+    ~STR(); // 析构函数
+};
+
+STR::STR(char* t) {
+    s = new char[strlen(t) + 1];
+    strcpy(s, t);
+    cout << "constructing..." << endl;
+}
+
+STR::STR(const STR& obj) {
+    s = new char[strlen(obj.s) + 1];
+    strcpy(s, obj.s);
+
+}
+
+STR::~STR() {
+    cout << "delete space..." << endl;
+    delete[] s;
+}
+
+void STR::backward(char* t1, char* t2) {
+    while (t1 < t2) {
+        char temp = *t1;
+        *t1 = *t2;
+        *t2 = temp;
+        t1++;
+        t2--;
+    }
+}
+
+void STR::fun() {
+    static STR objcopy(*this); // 静态副本对象，生命周期持续到程序结束
+    char* p = objcopy.s;
+    while (*p) {
+        // 跳过非字母字符
+        while (*p && !((*p >= 'a' && *p <= 'z') || (*p >= 'A' && *p <= 'Z'))) {
+            p++;
+        }
+        if (!*p) break; // 到达字符串末尾
+
+        char* start = p; // 单词起始位置
+        // 移动到单词末尾
+        while (*p && ((*p >= 'a' && *p <= 'z') || (*p >= 'A' && *p <= 'Z'))) {
+            p++;
+        }
+        char* end = p - 1; // 单词结束位置
+        backward(start, end); // 逆序单词
+    }
+
+    // 交换当前对象和副本对象的字符串指针
+    char* temp = s;
+    s = objcopy.s;
+    objcopy.s = temp;
+}
+
+void STR::print() {
+    cout << s << endl;
+}
+
+int main() {
+    char str[1000];
+    cin.getline(str, 1000);
+    STR obj(str);
+    cout << "copy constructing..." << endl;
+    cout << str << " can be tranformed to ";
+    obj.fun();
+    obj.print();
+    return 0;
+}
