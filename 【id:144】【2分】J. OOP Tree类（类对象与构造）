@@ -1,0 +1,32 @@
+#include <iostream>
+using namespace std;
+class Tree
+{
+private:
+    int ages;
+public:
+    Tree(int a) : ages(a) {}
+    void grow(int years) {
+        ages += years;
+    }
+    Tree(){
+        ages = 1;
+    }
+    void age() const {
+        cout << ages << endl;
+    }
+};
+int main(){
+    int years;
+    cin >> years;
+    Tree tree;
+    tree.grow(years);
+    tree.age();
+    int years_;
+    cin >> years_;
+    int add;
+    cin >> add;
+    Tree tree_(years_);
+    tree_.grow(add);
+    tree_.age();
+}
