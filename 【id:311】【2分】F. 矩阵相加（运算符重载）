@@ -12,9 +12,11 @@ public:
 	//	m = 0;
 	//	n = 0;
 	//}
+	//无必要,可不写.
 	Matrix(int a, int b) :m(a), n(b)
 	{
 		data = new int* [m];
+		//不可写作int**data = new int*[m];如果这样书写的话,此处的data就成为了一个全新的临时变量,生命周期仅存在于这个带参构造函数中,并没有实际操作(修改)对象中的data属性.
 		for (int i = 0; i < m; i++)
 		{
 			data[i] = new int[n];
@@ -36,6 +38,8 @@ public:
 	Matrix operator +(const Matrix& other)
 	{
 		Matrix result(m, n);
+		//此处建议新构造一个Matrix对象result而非使用this指针,因为直接使用this指针,会直接操作修改matrix1的值，导致后续(下一轮)的操作中matrix1的值会被污染.
+		//尽管set_value()函数会覆盖掉matrix1对象中原本的值,但保险起见还是不要使用this指针来书写.从源头上避免掉由于污染matrix1对象属性所可能引发的一系列意外情况.
 		for (int i = 0; i < m; i++)
 		{
 			for (int j = 0; j < n; j++)
