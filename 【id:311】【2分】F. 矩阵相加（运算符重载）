@@ -1,0 +1,134 @@
+#include <iostream>
+using namespace std;
+class Matrix
+{
+private:
+	int** data;
+	int m, n;
+public:
+	//Matrix()
+	//{
+	//	data = nullptr;
+	//	m = 0;
+	//	n = 0;
+	//}
+	Matrix(int a, int b) :m(a), n(b)
+	{
+		data = new int* [m];
+		for (int i = 0; i < m; i++)
+		{
+			data[i] = new int[n];
+		}
+	}
+	void set_value(int** nums)
+	{
+		//cout << "here1" << endl;
+		//cout << m <<" "<< n << endl;
+		for (int i = 0; i < m; i++)
+		{
+			for (int j = 0; j < n; j++)
+			{
+				data[i][j] = nums[i][j];
+				//cout << "here2" << endl;
+			}
+		}
+	}
+	Matrix operator +(const Matrix& other)
+	{
+		Matrix result(m, n);
+		for (int i = 0; i < m; i++)
+		{
+			for (int j = 0; j < n; j++)
+			{
+				result.data[i][j] = data[i][j] + other.data[i][j];
+			}
+		}
+		return result;
+	}
+
+	void Print()
+	{
+		for (int i = 0; i < m; i++)
+		{
+			for (int j = 0; j < n; j++)
+			{
+				if (j != n - 1)
+				{
+					cout << data[i][j] << " ";
+				}
+				else
+				{
+					cout << data[i][j] << endl;
+				}
+			}
+		}
+	}
+	~Matrix()
+	{
+		for (int i = 0; i < m; i++)
+		{
+			delete[]data[i];
+		}
+		delete[]data;
+	}
+
+};
+int main()
+{
+	int t;
+	cin >> t;
+	while (t--)
+	{
+		int m1, n1;
+		cin >> m1 >> n1;
+		int** nums1 = new int*[m1];
+		for (int i = 0; i < m1; i++)
+		{
+			nums1[i] = new int[n1];
+		}
+		for (int i = 0; i < m1; i++)
+		{
+			for (int j = 0; j < n1; j++)
+			{
+				cin >> nums1[i][j];
+			}
+		}
+		Matrix matrix1(m1, n1);
+		matrix1.set_value(nums1);
+		//cout << "here" << endl;
+		int m2, n2;
+		m2 = m1;
+		n2 = n1;
+		int** nums2 = new int* [m2];
+		for (int i = 0; i < m2; i++)
+		{
+			nums2[i] = new int[n2];
+		}	
+		for (int i = 0; i < m2; i++)
+		{
+			for (int j = 0; j < n2; j++)
+			{
+				cin >> nums2[i][j];
+			}
+		}
+		Matrix matrix2(m2, n2);
+		matrix2.set_value(nums2);
+
+		(matrix1 + matrix2).Print();
+
+
+		for (int i = 0; i < m1; i++)
+		{
+			delete[]nums1[i];
+		}
+		delete[]nums1;
+
+		for (int i = 0; i < m2; i++)
+		{
+			delete[]nums2[i];
+		}
+		delete[]nums2;
+	}
+
+	return 0;
+}
