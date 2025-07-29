@@ -1,0 +1,109 @@
+#include <iostream>
+#include <iomanip>
+#include <string>
+using namespace std;
+class CBook
+{
+private:
+
+	string book_name;
+	string author;
+	double price;
+	string publisher;
+public:
+	CBook()
+	{
+		book_name = "";
+		author = "";
+		price = 0.0;
+		publisher = "";
+	}
+	CBook(string a, string b, double c, string d) :book_name(a), author(b), price(c), publisher(d)
+	{
+
+	}
+	double get_price()const
+	{
+		return price;
+	}
+	friend void find(CBook* book, int n, int& max1index, int& max2index);
+	friend istream& in(istream& is, CBook& obj)
+	{
+		string s;
+		getline(is, s);
+		char c = ',';
+		int nums[3];
+		for (int i = 0; i < 3; i++)
+		{
+			nums[i] = 0;
+		}
+		int cnt = 0;
+		for (int i = 0; i < s.size(); i++)
+		{
+			if (s[i] == c)
+			{
+				nums[cnt++] = i;
+			}
+		}
+		obj.book_name = s.substr(0, nums[0]);
+		obj.author = s.substr(nums[0] + 1, nums[1] - nums[0] - 1);
+		obj.price = stod(s.substr(nums[1] + 1, nums[2] - nums[1] - 1));
+		obj.publisher = s.substr(nums[2] + 1);
+		return is;
+	}
+	friend ostream& out(ostream& os, CBook& other)
+	{
+		os << other.book_name << endl << other.author << endl << fixed << setprecision(2) << other.price << endl << other.publisher << endl;
+		return os;
+	}
+};
+void find(CBook* book, int n, int& max1index, int& max2index)
+{
+	double max1 = -1;
+	double max2 = -1;
+	max1index = -1;
+	max2index = -1;
+	for (int i = 0; i < n; i++)
+	{
+		double p = book[i].get_price();
+		if (p > max1)
+		{
+			max2 = max1;
+			max2index = max1index;
+			max1 = p;
+			max1index = i;
+		}
+		else if (p > max2)
+		{
+			max2 = p;
+			max2index = i;
+		}
+	}
+
+}
+int main()
+{
+	int t;
+	cin >> t;
+	cin.ignore();
+	while (t--)
+	{
+		int n;
+		cin >> n;
+		cin.ignore();
+		CBook* books = new CBook[n];
+		for (int i = 0; i < n; i++)
+		{
+			in(cin, books[i]);
+		}
+		int index1, index2;
+		find(books, n, index1, index2);
+		out(cout, books[index1]);
+		cout << endl;
+		out(cout, books[index2]);
+		cout << endl;
+		delete[]books;
+	}
+
+	return 0;
+}
