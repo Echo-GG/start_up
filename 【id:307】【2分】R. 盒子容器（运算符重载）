@@ -1,0 +1,67 @@
+#include<iostream>
+using namespace std;
+class box {
+private:
+	string num;
+	int length, width, height;
+public:
+	box()
+	{
+		num = "";
+		length = 0;
+		width = 0;
+		height = 0;
+	}
+	box(string a, int b, int c, int d) :num(a), length(b), width(c), height(d) {}
+	int getl()const { return length; }
+	int getw()const {return width; }
+	int geth()const { return height; }
+	int get_volume() const
+	{
+		return length * width * height;
+	}
+	int operator - (const box& other)
+	{
+		return min(length, other.length) * min(width, other.width) * min(height, other.height);
+	}
+	string get_num() { return num; }
+	~box() {}
+};
+int min(int a, int b)
+{
+	return a < b ? a : b;
+}
+int main()
+{
+	int n;
+	cin >> n;
+	box* boxes = new box[n];
+	for (int i = 0; i < n; i++)
+	{
+		string num;
+		cin >> num;
+		int length, width, height;
+		cin >> length >> width >> height;
+		boxes[i] = box(num, length, width, height);
+	}
+	int max = 0;
+	int index1 = 0;
+	int index2 = 0;
+	for (int i = 0; i < n - 1; i++)
+	{
+		for (int j = i + 1; j < n; j++)
+		{
+			if (boxes[i] - boxes[j] > max)
+			{
+				max = boxes[i] - boxes[j];
+				index1 = i;
+				index2 = j;
+			}
+		}
+	}
+	cout << boxes[index1].get_num() << "盒子放入" << boxes[index2].get_num() << "盒子溢出的水最多，为" << max << "。" << endl;
+
+	delete[]boxes;
+
+	return 0;
+}
