@@ -1,0 +1,117 @@
+#define _CRT_SECURE_NO_WARNINGS
+#include <cstring>
+#include <iostream>
+using namespace std;
+
+class CString
+{
+    char* s;
+    int n;
+public:
+    CString(char* const _s = nullptr) : s(nullptr), n(0)
+    {
+        if (!_s)
+            return;
+        n = strlen(_s);
+        s = new char[n + 1] {};
+        strncpy(s, _s, n); // 记得 #include <cstring>
+    }
+    ~CString()
+    {
+        delete[]s;
+    }
+
+    // 1. 要求重载 '+' 运算符, 实现两个CString对象相加的结果
+    //   （不能改变原来的两个CString对象）
+    // ...可以补充其它成员函数...
+
+
+/********** Write your code here! **********/
+     // 深拷贝拷贝构造函数
+    CString(const CString& other) : s(nullptr), n(0) 
+    {
+        if (!other.s) 
+            return;
+        n = other.n;
+        s = new char[n + 1];
+        strncpy(s, other.s, n);
+        s[n] = '\0';
+    }
+
+    // 深拷贝赋值运算符
+    CString& operator=(const CString& other) 
+    {
+        if (this != &other)
+        {
+            delete[]s;
+            s = nullptr;
+            n = 0;
+            n = other.n;
+            s = new char[other.n + 1];
+            strncpy(s, other.s,n);
+            s[n] = '\0';
+        }
+        return *this;
+    }
+    // 用于 operator+ 的构造函数
+    CString(int n_, const char* c) : n(n_) 
+    {
+        s = new char[n + 1];
+        strncpy(s, c, n);
+        s[n] = '\0';
+    }
+
+    friend ostream& operator<<(ostream& os, const CString& obj)
+    {
+        for (int i = 0; i < obj.n; i++)
+        {
+            os << obj.s[i];
+        }
+        return os;
+    }
+
+    friend CString operator+(const CString& lhs, const CString& rhs)
+    {
+        int len1 = lhs.n;
+        int len2 = rhs.n;
+        char* ch = new char[len1 + len2 + 1];
+        for (int i = 0; i < len1; i++)
+        {
+            ch[i] = lhs.s[i];
+        }
+        for (int i = len1; i < len1 + len2; i++)
+        {
+            ch[i] = rhs.s[i - len1];
+        }
+        ch[len1 + len2] = '\0';
+        CString result(len1 + len2, ch);
+        delete[] ch;
+        return result;
+    }
+};
+
+
+
+/*******************************************/
+    int main()
+    {
+        int n;
+        char input[64 + 1]{}; // ! strlen(s) + 1
+        cin >> n;
+        while (n--)
+        {
+            cin >> input;
+            CString s1(input);
+            cin >> input;
+            CString s2(input);
+
+            CString sEmpty;                   // !
+            delete new CString(s1 = s1 + s2); // !
+
+            cout << s1 + sEmpty << endl
+                << sEmpty + s2 << endl
+                << s1 + s2 << endl
+                << endl;
+        }
+        return 0;
+    }
