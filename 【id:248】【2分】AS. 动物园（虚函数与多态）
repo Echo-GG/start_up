@@ -14,44 +14,49 @@ public:
 	}
 	string get_nickname() { return nick_name; }
 	Animal(string name1,string name2,int a):name(name1),nick_name(name2),age(a){}
-	virtual void Speak() = 0;
+	virtual void Speak() = 0;	
+	virtual ~Animal() = default;
 
 };
 class Tiger :public Animal
 {
 public:
 	Tiger(string name1, string name2, int a) :Animal(name1,name2,a){}
-	void Speak()
+	void Speak()override
 	{
 		cout << "AOOO." << endl;
 	}
+	~Tiger()override{}
 };
 class Dog :public Animal
 {
 public:
 	Dog(string name1, string name2, int a) :Animal(name1, name2, a) {}
-	void Speak()
+	void Speak()override
 	{
 		cout << "WangWang." << endl;
 	}
+	~Dog()override{}
 };
 class Duck :public Animal
 {
 public:
 	Duck(string name1, string name2, int a) :Animal(name1, name2, a) {}
-	void Speak()
+	void Speak()override
 	{
 		cout << "GAGA." << endl;
 	}
+	~Duck()override{}
 };
 class Pig :public Animal
 {
 public:
 	Pig(string name1,string name2,int a):Animal(name1,name2,a){}
-	void Speak()
+	void Speak()override
 	{
 		cout << "HENGHENG." << endl;
 	}
+	~Pig()override{}
 };
 void display(Animal* ptr)
 {
