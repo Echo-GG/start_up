@@ -1,0 +1,101 @@
+#include <iostream>
+using namespace std;
+class Animal
+{
+protected:
+	int age;
+	string name;
+	string nick_name;
+public:
+	Animal()
+	{
+		age = 0;
+		name = "";
+	}
+	string get_nickname() { return nick_name; }
+	Animal(string name1,string name2,int a):name(name1),nick_name(name2),age(a){}
+	virtual void Speak() = 0;
+
+};
+class Tiger :public Animal
+{
+public:
+	Tiger(string name1, string name2, int a) :Animal(name1,name2,a){}
+	void Speak()
+	{
+		cout << "AOOO." << endl;
+	}
+};
+class Dog :public Animal
+{
+public:
+	Dog(string name1, string name2, int a) :Animal(name1, name2, a) {}
+	void Speak()
+	{
+		cout << "WangWang." << endl;
+	}
+};
+class Duck :public Animal
+{
+public:
+	Duck(string name1, string name2, int a) :Animal(name1, name2, a) {}
+	void Speak()
+	{
+		cout << "GAGA." << endl;
+	}
+};
+class Pig :public Animal
+{
+public:
+	Pig(string name1,string name2,int a):Animal(name1,name2,a){}
+	void Speak()
+	{
+		cout << "HENGHENG." << endl;
+	}
+};
+void display(Animal* ptr)
+{
+	cout << "Hello,I am " << ptr->get_nickname() << ",";
+	ptr->Speak();
+}	
+int main()
+{
+	int t;
+	cin >> t;
+
+	while (t--)
+	{
+		int age;
+		string name1, name2;
+		cin >> name1 >> name2 >> age;
+		Animal* animal = nullptr;
+		if (name1 != "Tiger" && name1 != "Dog" && name1 != "Duck" && name1 != "Pig")
+		{
+			cout << "There is no " << name1 << " in our Zoo." << endl;
+		}
+		else
+		{
+			if (name1 == "Tiger")
+			{
+				animal = new Tiger(name1, name2, age);
+			}
+			else if (name1 == "Dog")
+			{
+				animal = new Dog(name1, name2, age);
+			}
+			else if (name1 == "Duck")
+			{
+				animal = new Duck(name1, name2, age);
+			}
+			else if (name1 == "Pig")
+			{
+				animal = new Pig(name1, name2, age);
+			}
+			display(animal);
+			delete animal;
+		}
+
+	}
+
+	return 0;
+}
